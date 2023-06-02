@@ -9,3 +9,275 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  id        Int   @id @default(autoincrement())
+  name      String
+  cpf       String
+
+  permission Permission[]
+  colaborator Colaborator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Permission {
+  id        Int   @id @default(autoincrement())
+  name      String
+  description       String
+
+  adminId Int
+  admin Admin @relation(fields: [adminId], references: [id])
+
+  permissioncolaborator ColaboratorPermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("permissions")
+}
+
+model Colaborator {
+  id Int @id @default(autoincrement())
+  name String
+  cpf String
+  rg String
+  org_emitter String
+  email String
+  phone String
+
+  adminId Int
+  admin Admin @relation(fields: [adminId], references: [id])
+
+  permissioncolaborator ColaboratorPermission[]
+  typestore TypeStore[]
+  specialitie SpecialitieStore[]
+}
+
+model ColaboratorPermission {
+  id Int @id @default(autoincrement())
+
+  id_colaborator Int
+  colaborator Colaborator @relation(fields: [id_colaborator], references: [id])
+
+  id_permission Int
+  permission Permission @relation(fields: [id_permission], references: [id])
+
+  @@map("colaborator_permission")
+}
+
+model TypeStore {
+  id Int @id @default(autoincrement())
+  name String
+  image String
+
+  idColaborator Int
+  colaborator Colaborator @relation(fields: [idColaborator], references: [id])
+
+  @@map("types_stores")
+}
+
+model SpecialitieStore {
+  id Int @id @default(autoincrement())
+  name String
+  image String
+
+  idColaborator Int
+  colaborator Colaborator @relation(fields: [idColaborator], references: [id])
+
+  @@map("specialities_stores")
+}
+
+model Owner {
+  id Int @id @default(autoincrement())
+  name String
+  cpf String
+  rg String
+  org_emitter String
+  email String
+  phone String
+
+  store Store[]
+
+  @@map("owners")
+}
+
+model Store {
+  id Int @id @default(autoincrement())
+
+  type String
+  cpf_cnpj String
+  name String
+  display_name String
+  delivery Boolean
+  retire Boolean
+  logo String
+  cover String
+  minimal_order String
+
+  postal_code String
+  address String
+  number String
+  complement String
+  district String
+  city String
+  state String
+
+  email String 
+  phone String
+  
+  ownerId Int 
+  owner Owner @relation(fields: [ownerId], references: [id])
+
+  internalcategorie InternalStoreCategorie[]
+  paymentstore PaymentStore[]
+  order Order[]
+  avaliation Avaliation[]
+
+  @@map("stores")
+}
+
+model InternalCategories {
+  id Int @id @default(autoincrement())
+  name String
+
+  internalcategorie InternalStoreCategorie[]
+  productcategorie ProductCategorie[]
+
+  @@map("internal_categories")
+}
+
+model InternalStoreCategorie {
+  id Int @id @default(autoincrement())
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  id_i_categorie Int
+  internalcategorie InternalCategories @relation( fields: [id_i_categorie], references: [id])
+}
+
+model PaymentMethod {
+  id Int @id @default(autoincrement())
+  name String
+
+  paymentstore PaymentStore[]
+  order Order[]
+
+  @@map("payments_methods")
+}
+
+model PaymentStore {
+  id Int @id @default(autoincrement())
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  id_payment Int
+  payment PaymentMethod @relation(fields: [id_payment], references: [id])
+
+  @@map("payments_stores")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  price Decimal
+  price_promo Decimal
+  image String
+
+  productcategorie ProductCategorie[]
+  orderproduct Order_Product[]
+
+  @@map("products")
+}
+
+model ProductCategorie {
+  id Int @id @default(autoincrement())
+
+  id_categorie Int
+  internalcategorie InternalCategories @relation(fields: [id_categorie], references: [id])
+
+  id_product Int
+  product Product @relation(fields: [id_product], references: [id])
+
+  @@map("products_categories")
+}
+
+model Client {
+  id Int @id @default(autoincrement())
+  name String
+  cpf String
+  phone String
+  email String
+  postal_code String
+  street String
+  number String
+  complement String
+  district String
+  city String
+  state String
+
+  orders Order[]
+  avaliation Avaliation[]
+
+  @@map("clients")
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  order_number String
+  order_status String
+
+  store_id Int
+  store Store @relation(fields: [store_id], references: [id])
+
+  client_id Int
+  client Client @relation(fields: [client_id], references: [id])
+
+  payment_id Int
+  paymentmethod PaymentMethod @relation(fields: [payment_id], references: [id])
+
+  orderproduct Order_Product[]
+
+  avaliation Avaliation? 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders_client")
+}
+
+model Order_Product {
+  id Int @id @default(autoincrement())
+
+  id_order Int
+  order Order @relation(fields: [id_order], references: [id])
+
+  id_product Int
+  product Product @relation(fields: [id_product],references: [id])
+
+  @@map("orders_products")
+}
+
+model Avaliation {
+  id Int @id @default(autoincrement())
+  note Int
+  comment String
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  id_order Int @unique
+  order Order @relation(fields: [id_order], references: [id])
+
+  id_client Int
+  client Client @relation(fields: [id_client], references: [id])
+
+
+  @@map("avaliations")
+}
