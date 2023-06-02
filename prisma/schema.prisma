@@ -12,14 +12,17 @@ datasource db {
 
 model Admin {
   id        Int   @id @default(autoincrement())
-  name      String
+  firstname      String
+  lastname String
   cpf       String
+  phone String
+  email String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   permission Permission[]
   colaborator Colaborator[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@map("admins")
 }
@@ -28,21 +31,20 @@ model Permission {
   id        Int   @id @default(autoincrement())
   name      String
   description       String
-
   adminId Int
   admin Admin @relation(fields: [adminId], references: [id])
-
-  permissioncolaborator ColaboratorPermission[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  permission_colaborator Colaborator_Permission[]
 
   @@map("permissions")
 }
 
 model Colaborator {
   id Int @id @default(autoincrement())
-  name String
+  firstname String
+  lasttname String
   cpf String
   rg String
   org_emitter String
@@ -52,12 +54,12 @@ model Colaborator {
   adminId Int
   admin Admin @relation(fields: [adminId], references: [id])
 
-  permissioncolaborator ColaboratorPermission[]
+  permission_colaborator Colaborator_Permission[]
   typestore TypeStore[]
   specialitie SpecialitieStore[]
 }
 
-model ColaboratorPermission {
+model Colaborator_Permission {
   id Int @id @default(autoincrement())
 
   id_colaborator Int
@@ -77,7 +79,21 @@ model TypeStore {
   idColaborator Int
   colaborator Colaborator @relation(fields: [idColaborator], references: [id])
 
+  typestore_store TypeStore_Store[]
+
   @@map("types_stores")
+}
+
+model TypeStore_Store {
+  id Int @id @default(autoincrement())
+
+  id_typestore Int
+  typestore TypeStore @relation(fields: [id_typestore], references: [id])
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  @@map("typestore_store")
 }
 
 model SpecialitieStore {
@@ -88,7 +104,21 @@ model SpecialitieStore {
   idColaborator Int
   colaborator Colaborator @relation(fields: [idColaborator], references: [id])
 
+  specialitiestore_store SpecialitieStore_Store[]
+
   @@map("specialities_stores")
+}
+
+model SpecialitieStore_Store {
+  id Int @id @default(autoincrement())
+
+  id_specstore_store Int
+  specialitiestore SpecialitieStore @relation(fields: [id_specialitiestore_store], references: [id])
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  @@map("specialitiestore_store")
 }
 
 model Owner {
@@ -101,6 +131,8 @@ model Owner {
   phone String
 
   store Store[]
+  internalcategorie InternalCategorie[]
+  paymentmethod PaymentMethod[]
 
   @@map("owners")
 }
@@ -108,7 +140,7 @@ model Owner {
 model Store {
   id Int @id @default(autoincrement())
 
-  type String
+  persona_type String
   cpf_cnpj String
   name String
   display_name String
@@ -129,48 +161,57 @@ model Store {
   email String 
   phone String
   
-  ownerId Int 
-  owner Owner @relation(fields: [ownerId], references: [id])
+  id_owner Int 
+  owner Owner @relation(fields: [id_owner], references: [id])
 
-  internalcategorie InternalStoreCategorie[]
-  paymentstore PaymentStore[]
+  internalcategorie InternalStore_Categorie[]
+  paymentstore Payment_Store[]
   order Order[]
   avaliation Avaliation[]
+  typestore_store TypeStore_Store[]
+  specialitiestore_store SpecialitieStore_Store[]
 
   @@map("stores")
 }
 
-model InternalCategories {
+model InternalCategorie {
   id Int @id @default(autoincrement())
   name String
+  image String
 
-  internalcategorie InternalStoreCategorie[]
-  productcategorie ProductCategorie[]
+  id_owner Int
+  owner Owner @relation(fields: [id_owner], references: [id])
+
+  internalcategorie InternalStore_Categorie[]
+  Product_Categorie Product_Categorie[]
 
   @@map("internal_categories")
 }
 
-model InternalStoreCategorie {
+model InternalStore_Categorie {
   id Int @id @default(autoincrement())
 
   id_store Int
   store Store @relation(fields: [id_store], references: [id])
 
   id_i_categorie Int
-  internalcategorie InternalCategories @relation( fields: [id_i_categorie], references: [id])
+  internalcategorie InternalCategorie @relation( fields: [id_i_categorie], references: [id])
 }
 
 model PaymentMethod {
   id Int @id @default(autoincrement())
   name String
 
-  paymentstore PaymentStore[]
+  id_owner Int
+  owner Owner @relation(fields: [id_owner], references: [id])
+
+  Payment_Store Payment_Store[]
   order Order[]
 
   @@map("payments_methods")
 }
 
-model PaymentStore {
+model Payment_Store {
   id Int @id @default(autoincrement())
 
   id_store Int
@@ -190,17 +231,17 @@ model Product {
   price_promo Decimal
   image String
 
-  productcategorie ProductCategorie[]
+  Product_Categorie Product_Categorie[]
   orderproduct Order_Product[]
 
   @@map("products")
 }
 
-model ProductCategorie {
+model Product_Categorie {
   id Int @id @default(autoincrement())
 
   id_categorie Int
-  internalcategorie InternalCategories @relation(fields: [id_categorie], references: [id])
+  internalcategorie InternalCategorie @relation(fields: [id_categorie], references: [id])
 
   id_product Int
   product Product @relation(fields: [id_product], references: [id])
