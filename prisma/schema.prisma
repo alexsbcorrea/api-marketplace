@@ -57,6 +57,8 @@ model Colaborator {
   permission_colaborator Colaborator_Permission[]
   typestore TypeStore[]
   specialitie SpecialitieStore[]
+
+  @@map("colaborators")
 }
 
 model Colaborator_Permission {
@@ -196,6 +198,8 @@ model InternalStore_Categorie {
 
   id_i_categorie Int
   internalcategorie InternalCategorie @relation( fields: [id_i_categorie], references: [id])
+
+  @@map("internalstore_categorie")
 }
 
 model PaymentMethod {
