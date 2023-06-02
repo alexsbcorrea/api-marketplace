@@ -113,7 +113,7 @@ model SpecialitieStore_Store {
   id Int @id @default(autoincrement())
 
   id_specstore_store Int
-  specialitiestore SpecialitieStore @relation(fields: [id_specialitiestore_store], references: [id])
+  specialitiestore SpecialitieStore @relation(fields: [id_specstore_store], references: [id])
 
   id_store Int
   store Store @relation(fields: [id_store], references: [id])
