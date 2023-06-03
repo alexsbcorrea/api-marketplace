@@ -23,6 +23,9 @@ model Admin {
 
   permission Permission[]
   colaborator Colaborator[]
+  typestore TypeStore[]
+  specialitiestore SpecialitieStore[]
+  paymentforservice PaymentsforService[]
 
   @@map("admins")
 }
@@ -31,8 +34,10 @@ model Permission {
   id        Int   @id @default(autoincrement())
   name      String
   description       String
-  adminId Int
-  admin Admin @relation(fields: [adminId], references: [id])
+
+  id_admin Int
+  admin Admin @relation(fields: [id_admin], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -48,16 +53,17 @@ model Colaborator {
   cpf String
   rg String
   org_emitter String
+  phone String
   email String
   senha String
-  phone String
 
-  adminId Int
-  admin Admin @relation(fields: [adminId], references: [id])
+  id_admin Int
+  admin Admin @relation(fields: [id_admin], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   permission_colaborator Colaborator_Permission[]
-  typestore TypeStore[]
-  specialitie SpecialitieStore[]
 
   @@map("colaborators")
 }
@@ -71,6 +77,9 @@ model Colaborator_Permission {
   id_permission Int
   permission Permission @relation(fields: [id_permission], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("colaborator_permission")
 }
 
@@ -79,8 +88,11 @@ model TypeStore {
   name String
   image String
 
-  idColaborator Int
-  colaborator Colaborator @relation(fields: [idColaborator], references: [id])
+  id_admin Int
+  admin Admin @relation(fields: [id_admin], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   typestore_store TypeStore_Store[]
 
@@ -96,6 +108,9 @@ model TypeStore_Store {
   id_store Int
   store Store @relation(fields: [id_store], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("typestore_store")
 }
 
@@ -104,8 +119,11 @@ model SpecialitieStore {
   name String
   image String
 
-  idColaborator Int
-  colaborator Colaborator @relation(fields: [idColaborator], references: [id])
+  id_admin Int
+  admin Admin @relation(fields: [id_admin], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   specialitiestore_store SpecialitieStore_Store[]
 
@@ -121,17 +139,24 @@ model SpecialitieStore_Store {
   id_store Int
   store Store @relation(fields: [id_store], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("specialitiestore_store")
 }
 
 model Owner {
   id Int @id @default(autoincrement())
-  name String
+  fullname String
   cpf String
   rg String
   org_emitter String
-  email String
   phone String
+  email String
+  password String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   store Store[]
   internalcategorie InternalCategorie[]
@@ -142,7 +167,6 @@ model Owner {
 
 model Store {
   id Int @id @default(autoincrement())
-
   persona_type String
   cpf_cnpj String
   name String
@@ -163,9 +187,17 @@ model Store {
 
   email String 
   phone String
+  instagram String
+  facebook String
+  whatsapp String
+
+  isActive Boolean
   
   id_owner Int 
   owner Owner @relation(fields: [id_owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   internalcategorie InternalStore_Categorie[]
   paymentstore Payment_Store[]
@@ -173,8 +205,27 @@ model Store {
   avaliation Avaliation[]
   typestore_store TypeStore_Store[]
   specialitiestore_store SpecialitieStore_Store[]
+  paymentsforservice PaymentsforService[]
 
   @@map("stores")
+}
+
+model PaymentsforService {
+  id Int @id @default(autoincrement())
+  value Decimal
+  reference String
+  date DateTime
+
+  id_store Int
+  store Store @relation(fields: [id_store], references: [id])
+
+  id_admin Int
+  admin Admin @relation(fields: [id_admin], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("paymentsforservice")
 }
 
 model InternalCategorie {
@@ -182,8 +233,13 @@ model InternalCategorie {
   name String
   image String
 
+  isActive Boolean
+
   id_owner Int
   owner Owner @relation(fields: [id_owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   internalcategorie InternalStore_Categorie[]
   Product_Categorie Product_Categorie[]
@@ -200,6 +256,9 @@ model InternalStore_Categorie {
   id_i_categorie Int
   internalcategorie InternalCategorie @relation( fields: [id_i_categorie], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("internalstore_categorie")
 }
 
@@ -209,6 +268,9 @@ model PaymentMethod {
 
   id_owner Int
   owner Owner @relation(fields: [id_owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   Payment_Store Payment_Store[]
   order Order[]
@@ -225,6 +287,9 @@ model Payment_Store {
   id_payment Int
   payment PaymentMethod @relation(fields: [id_payment], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("payments_stores")
 }
 
@@ -235,6 +300,11 @@ model Product {
   price Decimal
   price_promo Decimal
   image String
+  inPromotion Boolean
+  avaliable Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   Product_Categorie Product_Categorie[]
   orderproduct Order_Product[]
@@ -251,12 +321,15 @@ model Product_Categorie {
   id_product Int
   product Product @relation(fields: [id_product], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("products_categories")
 }
 
 model Client {
   id Int @id @default(autoincrement())
-  name String
+  fullname String
   cpf String
   phone String
   email String
@@ -268,6 +341,9 @@ model Client {
   city String
   state String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   orders Order[]
   avaliation Avaliation[]
 
@@ -278,6 +354,8 @@ model Order {
   id Int @id @default(autoincrement())
   order_number String
   order_status String
+  payment_status String
+  obs_client String
 
   store_id Int
   store Store @relation(fields: [store_id], references: [id])
@@ -288,12 +366,12 @@ model Order {
   payment_id Int
   paymentmethod PaymentMethod @relation(fields: [payment_id], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   orderproduct Order_Product[]
 
   avaliation Avaliation? 
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@map("orders_client")
 }
@@ -306,6 +384,9 @@ model Order_Product {
 
   id_product Int
   product Product @relation(fields: [id_product],references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("orders_products")
 }
@@ -324,6 +405,8 @@ model Avaliation {
   id_client Int
   client Client @relation(fields: [id_client], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("avaliations")
 }
