@@ -3,7 +3,7 @@ import AdminController from "../../controllers/admin";
 
 const route = Router();
 
-route.get("/new", AdminController.createAdmin);
+route.get("/create", AdminController.createAdmin);
 route.get("/profile", AdminController.getAdmin);
 route.get("/update", AdminController.updateAdmin);
 route.get("/remove", AdminController.deleteAdmin);
@@ -15,6 +15,8 @@ route.get("/newcolab", AdminController.createColaborator);
 route.get("/colab/:id", AdminController.getColaborator);
 route.get("/update/:id", AdminController.updateColaborator);
 route.get("/remove/:id", AdminController.deleteColaborator);
-route.get("/configpermission/id", AdminController.configPermissionColaborator);
+route.get("/configpermission/:id", AdminController.configPermissionColaborator);
+route.get("/configpermission/:id", AdminController.createTypeStore);
+route.get("/configpermission/:id", AdminController.createSpecialitieStore);
 
 export default route;

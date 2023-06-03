@@ -66,4 +66,14 @@ export default class AdminController {
     res.json({ message: "Configurar Permissões do Colaborador" });
     return;
   }
+
+  static async createTypeStore(req: Request, res: Response) {
+    res.json({ message: "Atualizar Perfil Colab" });
+    return;
+  }
+
+  static async createSpecialitieStore(req: Request, res: Response) {
+    res.json({ message: "Atualizar Perfil Colab" });
+    return;
+  }
 }

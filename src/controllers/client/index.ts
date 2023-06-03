@@ -31,4 +31,9 @@ export default class ColaboratorController {
     res.json({ message: "Obter Perfil Colab" });
     return;
   }
+
+  static async addFavoriteStore(req: Request, res: Response) {
+    res.json({ message: "Obter Perfil Colab" });
+    return;
+  }
 }
