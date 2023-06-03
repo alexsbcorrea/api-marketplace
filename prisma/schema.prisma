@@ -49,6 +49,7 @@ model Colaborator {
   rg String
   org_emitter String
   email String
+  senha String
   phone String
 
   adminId Int
