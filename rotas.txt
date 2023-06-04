@@ -1,0 +1,24 @@
+{
+  "rota": "http://localhost:5000/admin/create",
+  "req.body": {
+    "firstname": "Alex",
+    "lastname": "Correa",
+    "cpf": "04100062329",
+    "phone": "98988886387",
+    "email": "alex.sandro_as@hotmail.com",
+    "confirmPassword": 3592,
+    "password": 3592
+  }
+},
+{
+  "rota": "http://localhost:5000/admin/create",
+  "req.body": {
+    "firstname": "Ana Paula",
+    "lastname": "Costa",
+    "cpf": "49656916875",
+    "phone": "98982942421",
+    "email": "anapaula_schwab@hotmail.com",
+    "confirmPassword": 2023,
+    "password": 2023
+  }
+}

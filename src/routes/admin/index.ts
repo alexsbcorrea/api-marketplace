@@ -1,9 +1,10 @@
 import { Router } from "express";
 import AdminController from "../../controllers/admin";
+import { AdminTokenValidation } from "../../utils/TokenController";
 
 const route = Router();
 
-route.get("/create", AdminController.createAdmin);
+route.get("/create", AdminTokenValidation, AdminController.createAdmin);
 route.get("/profile", AdminController.getAdmin);
 route.get("/update", AdminController.updateAdmin);
 route.get("/remove", AdminController.deleteAdmin);

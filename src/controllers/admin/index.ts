@@ -1,9 +1,33 @@
 import { Request, Response, NextFunction } from "express";
 import prismaClient from "../../db/prismaClient";
+import "dotenv/config";
+
+import { GenerateToken } from "../../utils/TokenController";
 
 export default class AdminController {
   static async createAdmin(req: Request, res: Response) {
-    res.json({ message: "Novo Admin" });
+    const {
+      firstname,
+      lastname,
+      cpf,
+      phone,
+      email,
+      confirmPassword,
+      password,
+    } = req.body;
+
+    //Validations
+    const user = {
+      id: 1,
+      firstname: "Alex",
+      email: "alex.sandro_as@hotmail.com",
+    };
+
+    const token = GenerateToken("admin", user, req, res);
+
+    const idd = req.userID;
+
+    res.json({ token, idd });
     return;
   }
 
