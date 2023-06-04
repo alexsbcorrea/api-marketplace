@@ -15,7 +15,7 @@ model Admin {
   firstname      String
   lastname String
   cpf       String
-  phone String
+  phone String?
   email String
   password  String
   createdAt DateTime @default(now())
@@ -33,7 +33,7 @@ model Admin {
 model Permission {
   id        Int   @id @default(autoincrement())
   name      String
-  description       String
+  description       String?
 
   id_admin Int
   admin Admin @relation(fields: [id_admin], references: [id])
@@ -53,7 +53,7 @@ model Colaborator {
   cpf String
   rg String
   org_emitter String
-  phone String
+  phone String?
   email String
   senha String
 
@@ -86,7 +86,7 @@ model Colaborator_Permission {
 model TypeStore {
   id Int @id @default(autoincrement())
   name String
-  image String
+  image String?
 
   id_admin Int
   admin Admin @relation(fields: [id_admin], references: [id])
@@ -117,7 +117,7 @@ model TypeStore_Store {
 model SpecialitieStore {
   id Int @id @default(autoincrement())
   name String
-  image String
+  image String?
 
   id_admin Int
   admin Admin @relation(fields: [id_admin], references: [id])
@@ -151,9 +151,10 @@ model Owner {
   cpf String
   rg String
   org_emitter String
-  phone String
+  phone String?
   email String
   password String
+  level String
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -170,26 +171,26 @@ model Store {
   persona_type String
   cpf_cnpj String
   name String
-  display_name String
+  display_name String?
   delivery Boolean
   retire Boolean
-  logo String
-  cover String
-  minimal_order String
+  logo String?
+  cover String?
+  minimal_order String?
 
   postal_code String
   address String
   number String
-  complement String
+  complement String?
   district String
   city String
   state String
 
-  email String 
-  phone String
-  instagram String
-  facebook String
-  whatsapp String
+  email String? 
+  phone String?
+  instagram String?
+  facebook String?
+  whatsapp String?
 
   isActive Boolean
   
@@ -232,7 +233,7 @@ model PaymentsforService {
 model InternalCategorie {
   id Int @id @default(autoincrement())
   name String
-  image String
+  image String?
 
   isActive Boolean
 
@@ -266,6 +267,7 @@ model InternalStore_Categorie {
 model PaymentMethod {
   id Int @id @default(autoincrement())
   name String
+  obs_method String?
 
   id_owner Int
   owner Owner @relation(fields: [id_owner], references: [id])
@@ -299,8 +301,8 @@ model Product {
   name String
   description String
   price Decimal
-  price_promo Decimal
-  image String
+  price_promo Decimal?
+  image String?
   inPromotion Boolean
   avaliable Boolean
 
@@ -331,14 +333,14 @@ model Product_Categorie {
 model Client {
   id Int @id @default(autoincrement())
   fullname String
-  image String
+  image String?
   cpf String
   phone String
   email String
   postal_code String
   street String
   number String
-  complement String
+  complement String?
   district String
   city String
   state String
@@ -358,7 +360,8 @@ model Order {
   order_number String
   order_status String
   payment_status String
-  obs_client String
+  obs_client String?
+  value Decimal
 
   store_id Int
   store Store @relation(fields: [store_id], references: [id])
@@ -397,7 +400,7 @@ model Order_Product {
 model Avaliation {
   id Int @id @default(autoincrement())
   note Int
-  comment String
+  comment String?
 
   id_store Int
   store Store @relation(fields: [id_store], references: [id])
