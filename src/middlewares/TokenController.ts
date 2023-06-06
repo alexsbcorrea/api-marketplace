@@ -20,7 +20,7 @@ export interface JWTDecode {
   iat: Number;
 }
 
-export function GenerateToken(
+export async function GenerateToken(
   type: String,
   user: User,
   req: Request,

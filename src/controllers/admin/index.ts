@@ -1,8 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import prismaClient from "../../db/prismaClient";
 import "dotenv/config";
 
-import { GenerateToken } from "../../utils/TokenController";
+import { GenerateToken } from "../../middlewares/TokenController";
+import { cp } from "fs";
+
+const typeforToken: String = "admin";
 
 export default class AdminController {
   static async createAdmin(req: Request, res: Response) {
@@ -16,24 +19,151 @@ export default class AdminController {
       password,
     } = req.body;
 
+    if (!firstname) {
+      return res.status(422).json({
+        message: "O Nome é obrigatório.",
+      });
+    }
+
+    if (!lastname) {
+      return res.status(422).json({
+        message: "O Sobrenome é obrigatório.",
+      });
+    }
+
+    if (!cpf) {
+      return res.status(422).json({
+        message: "O CPF é obrigatório.",
+      });
+    }
+
+    if (!email) {
+      return res.status(422).json({
+        message: "O E-mail é obrigatório.",
+      });
+    }
+
+    if (!password) {
+      return res.status(422).json({
+        message: "A Senha é obrigatória.",
+      });
+    }
+
+    if (!confirmPassword) {
+      return res.status(422).json({
+        message: "A Confirmação de Senha é obrigatória.",
+      });
+    }
+
+    if (password != confirmPassword) {
+      return res.status(422).json({
+        message: "A Senha e a Confirmação de Senha não correspondem.",
+      });
+    }
+
     //Validations
-    const user = {
-      id: 1,
-      firstname: "Alex",
-      email: "alex.sandro_as@hotmail.com",
-    };
+    const checkEmail = await prismaClient.admin.findFirst({
+      where: {
+        email,
+      },
+    });
 
-    const token = GenerateToken("admin", user, req, res);
+    if (checkEmail) {
+      return res.status(422).json({
+        message: "E-mail inválido, forneça outro e-mail para continuar",
+      });
+    }
 
-    const idd = req.userID;
+    try {
+      const newAdmin = await prismaClient.admin.create({
+        data: {
+          firstname,
+          lastname,
+          cpf,
+          phone,
+          email,
+          password,
+        },
+      });
 
-    res.json({ token, idd });
-    return;
+      const payloadToken = {
+        id: newAdmin.id,
+        firstname: newAdmin.firstname,
+        email: newAdmin.email,
+      };
+
+      const token = await GenerateToken(typeforToken, payloadToken, req, res);
+
+      return res.status(201).json({
+        message: "Cadastro realizado com sucesso.",
+        firstname: newAdmin.firstname,
+        lastname: newAdmin.lastname,
+        email: newAdmin.email,
+        token: token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Erro no Servidor, tente novamente mais tarde.",
+      });
+    }
   }
+  static async loginAdmin(req: Request, res: Response) {
+    const { email, password } = req.body;
 
+    if (!email) {
+      return res.status(422).json({
+        message: "O E-mail é obrigatório",
+      });
+    }
+
+    if (!password) {
+      return res.status(422).json({
+        message: "A Senha é obrigatória",
+      });
+    }
+
+    const checkUser = await prismaClient.admin.findFirst({ where: { email } });
+
+    if (!checkUser) {
+      return res.status(404).json({
+        message: "Usuário inexistente.",
+      });
+    }
+
+    if (password == checkUser?.password) {
+      const payloadToken = {
+        id: checkUser.id,
+        firstname: checkUser.firstname,
+        email: checkUser.email,
+      };
+
+      const token = await GenerateToken(typeforToken, payloadToken, req, res);
+
+      return res.status(200).json({
+        message: "Login realizado com sucesso.",
+        firstname: checkUser.firstname,
+        lastname: checkUser.lastname,
+        email: checkUser.email,
+        token: token,
+      });
+    } else {
+      return res.status(422).json({
+        message: "Usuário ou Senha inválida.",
+      });
+    }
+  }
   static async getAdmin(req: Request, res: Response) {
-    res.json({ message: "Obter Admin" });
-    return;
+    const id = req.userID;
+
+    if (id) {
+      const user = await prismaClient.admin.findUnique({
+        where: { id: Number(id) },
+      });
+      return res.json({ user });
+    } else {
+      return res.json({ message: "Sem ID" });
+    }
   }
 
   static async updateAdmin(req: Request, res: Response) {

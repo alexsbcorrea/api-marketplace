@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_LOCAL")
 }
 
 model Admin {
@@ -147,7 +147,8 @@ model SpecialitieStore_Store {
 
 model Owner {
   id Int @id @default(autoincrement())
-  fullname String
+  firstname      String
+  lastname String
   cpf String
   rg String
   org_emitter String
@@ -267,6 +268,7 @@ model InternalStore_Categorie {
 model PaymentMethod {
   id Int @id @default(autoincrement())
   name String
+  description String
   obs_method String?
 
   id_owner Int
@@ -332,7 +334,8 @@ model Product_Categorie {
 
 model Client {
   id Int @id @default(autoincrement())
-  fullname String
+  firstname      String
+  lastname String
   image String?
   cpf String
   phone String
