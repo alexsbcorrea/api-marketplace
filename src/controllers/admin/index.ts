@@ -3,6 +3,7 @@ import prismaClient from "../../db/prismaClient";
 import "dotenv/config";
 
 import { GenerateToken } from "../../middlewares/TokenController";
+import { prependListener } from "process";
 
 const typeforToken: String = "admin";
 
@@ -245,47 +246,401 @@ export default class AdminController {
     }
   }
   static async createPermission(req: Request, res: Response) {
-    res.json({ message: "Adicionar Permissão" });
-    return;
+    const id = req.userID;
+    const { name, description } = req.body;
+
+    if (!name) {
+      return res
+        .status(422)
+        .json({ message: "O Nome da Permissão é obrigatório" });
+    }
+
+    try {
+      const newPermission = await prismaClient.permission.create({
+        data: {
+          name,
+          description,
+          id_admin: Number(id),
+        },
+      });
+      return res.status(201).json({ message: "Permissão criada com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
   }
   static async getPermission(req: Request, res: Response) {
-    res.json({ message: "Adicionar Permissão" });
-    return;
+    const id = req.userID;
+    const id_permission = req.params.id;
+
+    if (!id_permission) {
+      return res
+        .status(422)
+        .json({ message: "O ID da Permissão é obrigatório." });
+    }
+
+    const permission = await prismaClient.permission.findUnique({
+      where: { id: Number(id_permission) },
+    });
+
+    if (!permission) {
+      return res.status(404).json({ message: "Permissão não encontrada." });
+    }
+
+    return res.status(200).json({ permission });
   }
   static async updatePermission(req: Request, res: Response) {
-    res.json({ message: "Adicionar Permissão" });
-    return;
+    const id = req.userID;
+    const id_permission = req.params.id;
+
+    const { name, description } = req.body;
+
+    if (!name) {
+      return res
+        .status(422)
+        .json({ message: "O Nome da Permissão é obrigatório." });
+    }
+
+    const permissionCheck = await prismaClient.permission.findUnique({
+      where: { id: Number(id_permission) },
+    });
+
+    if (!permissionCheck) {
+      return res.status(404).json({ message: "Permissão não encontrada." });
+    }
+
+    try {
+      const updatePermission = await prismaClient.permission.update({
+        where: { id: Number(id_permission) },
+        data: {
+          name,
+          description,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Permissão Atualizada com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
   }
   static async deletePermission(req: Request, res: Response) {
-    res.json({ message: "Adicionar Permissão" });
-    return;
+    const id = req.userID;
+    const id_permission = req.params.id;
+
+    const permissionCheck = await prismaClient.permission.findUnique({
+      where: { id: Number(id_permission) },
+    });
+
+    if (!permissionCheck) {
+      return res.status(404).json({ message: "Permissão não encontrada." });
+    }
+
+    try {
+      const permission = await prismaClient.permission.delete({
+        where: { id: Number(id_permission) },
+      });
+      return res
+        .status(200)
+        .json({ message: "Permissão Removida com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor. Tente novamente mais tarde." });
+    }
+  }
+  static async getAllPermissions(req: Request, res: Response) {
+    const allpermissions = await prismaClient.permission.findMany({
+      orderBy: [{ name: "asc" }],
+    });
+
+    if (allpermissions.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum Permissão foi encontrada." });
+    }
+
+    res.status(200).json({ allpermissions });
+  }
+  static async getMyPermission(req: Request, res: Response) {
+    const id = req.userID;
+
+    const mypermissions = await prismaClient.permission.findMany({
+      where: { id_admin: Number(id) },
+      orderBy: [{ name: "asc" }],
+    });
+
+    if (mypermissions.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum Permissão foi encontrada." });
+    }
+
+    res.status(200).json({ mypermissions });
   }
   static async createColaborator(req: Request, res: Response) {
-    res.json({ message: "Adicionar Colaborador" });
-    return;
+    const id = req.userID;
+    const { firstname, lasttname, cpf, rg, org_emitter, phone, email, senha } =
+      req.body;
+
+    if (!firstname) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!lasttname) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!cpf) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!rg) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!org_emitter) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!phone) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!email) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    try {
+      const newColab = await prismaClient.colaborator.create({
+        data: {
+          firstname,
+          lasttname,
+          cpf,
+          rg,
+          org_emitter,
+          phone,
+          email,
+          senha,
+          id_admin: Number(id),
+        },
+      });
+      return res.status(201).json({ message: "Cadastro criado com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
   }
   static async getColaborator(req: Request, res: Response) {
-    res.json({ message: "Adicionar Colaborador" });
-    return;
+    const id = req.userID;
+    const id_colab = req.params.id;
+
+    if (!id_colab) {
+      return res
+        .status(422)
+        .json({ message: "O ID do Colaborador é obrigatório." });
+    }
+
+    const colaborator = await prismaClient.colaborator.findUnique({
+      where: { id: Number(id_colab) },
+      select: {
+        firstname: true,
+        lasttname: true,
+        cpf: true,
+        rg: true,
+        org_emitter: true,
+        phone: true,
+        email: true,
+        senha: false,
+        id_admin: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!colaborator) {
+      return res.status(404).json({ message: "Colaborador não encontrado." });
+    }
+
+    return res.status(200).json({ colaborator });
   }
   static async updateColaborator(req: Request, res: Response) {
-    res.json({ message: "Adicionar Colaborador" });
-    return;
+    const id_colab = req.params.id;
+    const { firstname, lasttname, cpf, rg, org_emitter, phone, email } =
+      req.body;
+
+    if (!id_colab) {
+      return res
+        .status(422)
+        .json({ message: "O ID do Colaborador é obrigatório." });
+    }
+
+    const checkColab = await prismaClient.colaborator.findUnique({
+      where: { id: Number(id_colab) },
+    });
+
+    if (!checkColab) {
+      return res.status(404).json({ message: "Colaborador não encontrado." });
+    }
+
+    if (!firstname) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!lasttname) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!cpf) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!rg) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!org_emitter) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!phone) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    if (!email) {
+      return res
+        .status(422)
+        .json({ message: "O Primeiro Nome é obrigatório." });
+    }
+
+    try {
+      const updateColab = await prismaClient.colaborator.update({
+        where: { id: Number(id_colab) },
+        data: {
+          firstname,
+          lasttname,
+          cpf,
+          rg,
+          org_emitter,
+          phone,
+          email,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Cadastro atualizado com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
+  }
+  static async updateColaboratorPassword(req: Request, res: Response) {
+    const id_colab = req.params.id;
+    const { senha, novasenha, confsenha } = req.body;
+
+    if (!id_colab) {
+      return res
+        .status(422)
+        .json({ message: "O ID do Colaborador é obrigatório." });
+    }
+
+    if (!senha) {
+      return res.status(422).json({ message: "A Senha Atual é obrigatória." });
+    }
+
+    if (!novasenha) {
+      return res.status(422).json({ message: "A Nova Senha é obrigatória." });
+    }
+
+    if (!confsenha) {
+      return res
+        .status(422)
+        .json({ message: "A Confirmação de Senha é obrigatória." });
+    }
+
+    const checkColab = await prismaClient.colaborator.findUnique({
+      where: { id: Number(id_colab) },
+    });
+
+    if (!checkColab) {
+      return res.status(404).json({ message: "Colaborador não encontrado." });
+    }
+
+    if (senha != checkColab.senha) {
+      return res.status(422).json({ message: "A Senha Atual está incorreta." });
+    }
+
+    if (novasenha != confsenha) {
+      return res
+        .status(422)
+        .json({ message: "A Nova Senha e a Confirmação não correspondem." });
+    }
+
+    try {
+      const updateColab = await prismaClient.colaborator.update({
+        where: { id: Number(id_colab) },
+        data: {
+          senha,
+        },
+      });
+      return res.status(200).json({ message: "Senha atualizada com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
   }
   static async deleteColaborator(req: Request, res: Response) {
-    res.json({ message: "Adicionar Colaborador" });
+    res.status(200).json({ message: "Adicionar Permissão" });
     return;
   }
   static async configPermissionColaborator(req: Request, res: Response) {
-    res.json({ message: "Configurar Permissões do Colaborador" });
+    res.status(200).json({ message: "Adicionar Permissão" });
     return;
   }
   static async createTypeStore(req: Request, res: Response) {
-    res.json({ message: "Atualizar Perfil Colab" });
+    res.status(200).json({ message: "Adicionar Permissão" });
     return;
   }
   static async createSpecialitieStore(req: Request, res: Response) {
-    res.json({ message: "Atualizar Perfil Colab" });
+    res.status(200).json({ message: "Adicionar Permissão" });
     return;
   }
 }

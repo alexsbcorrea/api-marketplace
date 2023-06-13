@@ -7,17 +7,21 @@ const route = Router();
 route.post("/create", AdminController.createAdmin);
 route.post("/login", AdminController.loginAdmin);
 route.get("/profile", AdminTokenValidation, AdminController.getAdmin);
-route.post(
+route.patch(
   "/updateprofile",
   AdminTokenValidation,
   AdminController.updateAdminProfile
 );
-route.post(
+route.patch(
   "/changepassword",
   AdminTokenValidation,
   AdminController.updateAdminPassword
 );
-route.post("/removeaccount", AdminTokenValidation, AdminController.deleteAdmin);
+route.delete(
+  "/removeaccount",
+  AdminTokenValidation,
+  AdminController.deleteAdmin
+);
 route.post(
   "/newpermission",
   AdminTokenValidation,
@@ -28,26 +32,45 @@ route.get(
   AdminTokenValidation,
   AdminController.getPermission
 );
-route.post(
-  "/update/:id",
+route.patch(
+  "/updatepermission/:id",
   AdminTokenValidation,
   AdminController.updatePermission
 );
-route.post(
-  "/delete/:id",
+route.delete(
+  "/deletepermission/:id",
   AdminTokenValidation,
   AdminController.deletePermission
+);
+route.get(
+  "/allpermissions",
+  AdminTokenValidation,
+  AdminController.getAllPermissions
+);
+route.get(
+  "/mypermissions",
+  AdminTokenValidation,
+  AdminController.getMyPermission
 );
 route.post(
   "/newcolab",
   AdminTokenValidation,
   AdminController.createColaborator
 );
-route.get("/colab/:id", AdminTokenValidation, AdminController.getColaborator);
-route.post(
-  "/update/:id",
+route.get(
+  "/getcolab/:id",
+  AdminTokenValidation,
+  AdminController.getColaborator
+);
+route.patch(
+  "/updateprofilecolab/:id",
   AdminTokenValidation,
   AdminController.updateColaborator
+);
+route.patch(
+  "/changepasswordcolab/:id",
+  AdminTokenValidation,
+  AdminController.updateColaboratorPassword
 );
 route.post(
   "/remove/:id",
