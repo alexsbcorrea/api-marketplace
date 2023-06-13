@@ -1,9 +1,8 @@
-import e, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import prismaClient from "../../db/prismaClient";
 import "dotenv/config";
 
 import { GenerateToken } from "../../middlewares/TokenController";
-import { cp } from "fs";
 
 const typeforToken: String = "admin";
 
@@ -61,7 +60,6 @@ export default class AdminController {
       });
     }
 
-    //Validations
     const checkEmail = await prismaClient.admin.findFirst({
       where: {
         email,
@@ -156,76 +154,136 @@ export default class AdminController {
   static async getAdmin(req: Request, res: Response) {
     const id = req.userID;
 
-    if (id) {
-      const user = await prismaClient.admin.findUnique({
+    const user = await prismaClient.admin.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        cpf: true,
+        phone: true,
+        email: true,
+        password: false,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return res.status(200).json({ user });
+  }
+  static async updateAdminProfile(req: Request, res: Response) {
+    const id = req.userID;
+    const { firstname, lastname, cpf, phone, email } = req.body;
+
+    try {
+      const updateuser = await prismaClient.admin.update({
         where: { id: Number(id) },
+        data: {
+          firstname,
+          lastname,
+          cpf,
+          phone,
+          email,
+        },
       });
-      return res.json({ user });
-    } else {
-      return res.json({ message: "Sem ID" });
+      res.status(200).json({
+        message: "Cadastro atualizado com sucesso.",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Erro no Servidor, tente novamente mais tarde.",
+      });
     }
   }
+  static async updateAdminPassword(req: Request, res: Response) {
+    const id = req.userID;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
 
-  static async updateAdmin(req: Request, res: Response) {
-    res.json({ message: "Atualizar Admin" });
-    return;
+    const user = await prismaClient.admin.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (currentPassword != user?.password) {
+      return res.status(422).json({ message: "A Senha Atual está incorreta." });
+    }
+
+    if (newPassword != confirmPassword) {
+      return res
+        .status(422)
+        .json({ message: "A Nova Senha e a Confirmação não correspondem." });
+    }
+
+    try {
+      const updatePassword = await prismaClient.admin.update({
+        where: { id: Number(id) },
+        data: {
+          password: newPassword,
+        },
+      });
+      return res.status(200).json({ message: "Senha alterada com sucesso." });
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
   }
-
   static async deleteAdmin(req: Request, res: Response) {
-    res.json({ message: "Remover Admin" });
-    return;
-  }
+    const id = req.userID;
 
+    try {
+      const admin = await prismaClient.admin.delete({
+        where: { id: Number(id) },
+      });
+      return res.status(200).json({
+        message: "Conta de Administrador removida com sucesso.",
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro no Servidor, tente novamente mais tarde.",
+      });
+    }
+  }
   static async createPermission(req: Request, res: Response) {
     res.json({ message: "Adicionar Permissão" });
     return;
   }
-
   static async getPermission(req: Request, res: Response) {
     res.json({ message: "Adicionar Permissão" });
     return;
   }
-
   static async updatePermission(req: Request, res: Response) {
     res.json({ message: "Adicionar Permissão" });
     return;
   }
-
   static async deletePermission(req: Request, res: Response) {
     res.json({ message: "Adicionar Permissão" });
     return;
   }
-
   static async createColaborator(req: Request, res: Response) {
     res.json({ message: "Adicionar Colaborador" });
     return;
   }
-
   static async getColaborator(req: Request, res: Response) {
     res.json({ message: "Adicionar Colaborador" });
     return;
   }
-
   static async updateColaborator(req: Request, res: Response) {
     res.json({ message: "Adicionar Colaborador" });
     return;
   }
-
   static async deleteColaborator(req: Request, res: Response) {
     res.json({ message: "Adicionar Colaborador" });
     return;
   }
-
   static async configPermissionColaborator(req: Request, res: Response) {
     res.json({ message: "Configurar Permissões do Colaborador" });
     return;
   }
-
   static async createTypeStore(req: Request, res: Response) {
     res.json({ message: "Atualizar Perfil Colab" });
     return;
   }
-
   static async createSpecialitieStore(req: Request, res: Response) {
     res.json({ message: "Atualizar Perfil Colab" });
     return;

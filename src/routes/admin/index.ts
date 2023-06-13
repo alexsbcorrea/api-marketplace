@@ -7,21 +7,67 @@ const route = Router();
 route.post("/create", AdminController.createAdmin);
 route.post("/login", AdminController.loginAdmin);
 route.get("/profile", AdminTokenValidation, AdminController.getAdmin);
-route.post("/update", AdminController.updateAdmin);
-route.post("/remove", AdminController.deleteAdmin);
-route.post("/newpermission", AdminController.createPermission);
-route.get("/permission/:id", AdminController.getPermission);
-route.post("/update/:id", AdminController.updatePermission);
-route.post("/delete/:id", AdminController.deletePermission);
-route.post("/newcolab", AdminController.createColaborator);
-route.get("/colab/:id", AdminController.getColaborator);
-route.post("/update/:id", AdminController.updateColaborator);
-route.post("/remove/:id", AdminController.deleteColaborator);
+route.post(
+  "/updateprofile",
+  AdminTokenValidation,
+  AdminController.updateAdminProfile
+);
+route.post(
+  "/changepassword",
+  AdminTokenValidation,
+  AdminController.updateAdminPassword
+);
+route.post("/removeaccount", AdminTokenValidation, AdminController.deleteAdmin);
+route.post(
+  "/newpermission",
+  AdminTokenValidation,
+  AdminController.createPermission
+);
+route.get(
+  "/permission/:id",
+  AdminTokenValidation,
+  AdminController.getPermission
+);
+route.post(
+  "/update/:id",
+  AdminTokenValidation,
+  AdminController.updatePermission
+);
+route.post(
+  "/delete/:id",
+  AdminTokenValidation,
+  AdminController.deletePermission
+);
+route.post(
+  "/newcolab",
+  AdminTokenValidation,
+  AdminController.createColaborator
+);
+route.get("/colab/:id", AdminTokenValidation, AdminController.getColaborator);
+route.post(
+  "/update/:id",
+  AdminTokenValidation,
+  AdminController.updateColaborator
+);
+route.post(
+  "/remove/:id",
+  AdminTokenValidation,
+  AdminController.deleteColaborator
+);
 route.post(
   "/configpermission/:id",
+  AdminTokenValidation,
   AdminController.configPermissionColaborator
 );
-route.post("/createtype/:id", AdminController.createTypeStore);
-route.post("/createspec/:id", AdminController.createSpecialitieStore);
+route.post(
+  "/createtype/:id",
+  AdminTokenValidation,
+  AdminController.createTypeStore
+);
+route.post(
+  "/createspec/:id",
+  AdminTokenValidation,
+  AdminController.createSpecialitieStore
+);
 
 export default route;
