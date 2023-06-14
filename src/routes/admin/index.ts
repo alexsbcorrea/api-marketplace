@@ -72,23 +72,36 @@ route.patch(
   AdminTokenValidation,
   AdminController.updateColaboratorPassword
 );
-route.post(
+route.delete(
   "/remove/:id",
   AdminTokenValidation,
   AdminController.deleteColaborator
 );
 route.post(
-  "/configpermission/:id",
+  "/configpermission",
   AdminTokenValidation,
   AdminController.configPermissionColaborator
 );
 route.post(
-  "/createtype/:id",
+  "/createtype",
   AdminTokenValidation,
   AdminController.createTypeStore
 );
+route.get("/gettype/:id", AdminTokenValidation, AdminController.getTypeStore);
+route.patch(
+  "/updatetype/:id",
+  AdminTokenValidation,
+  AdminController.updateTypeStore
+);
+route.delete(
+  "/deletetype/:id",
+  AdminTokenValidation,
+  AdminController.deleteTypeStore
+);
+route.get("/alltypes", AdminTokenValidation, AdminController.getAllTypeStore);
+route.get("/mytypes", AdminTokenValidation, AdminController.getMyTypeStore);
 route.post(
-  "/createspec/:id",
+  "/createspec",
   AdminTokenValidation,
   AdminController.createSpecialitieStore
 );

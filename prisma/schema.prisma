@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "mysql"
   url      = env("DATABASE_URL_LOCAL")
 }
 
@@ -55,7 +55,7 @@ model Colaborator {
   org_emitter String
   phone String?
   email String
-  senha String
+  password String
 
   id_admin Int
   admin Admin @relation(fields: [id_admin], references: [id])
