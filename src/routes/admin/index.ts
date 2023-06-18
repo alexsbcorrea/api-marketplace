@@ -77,10 +77,21 @@ route.delete(
   AdminTokenValidation,
   AdminController.deleteColaborator
 );
-route.post(
-  "/configpermission",
+route.get("/mycolabs", AdminTokenValidation, AdminController.getMyColaborators);
+route.get(
+  "/allcolabs",
   AdminTokenValidation,
-  AdminController.configPermissionColaborator
+  AdminController.getAllColaborators
+);
+route.post(
+  "/addcolabpermission",
+  AdminTokenValidation,
+  AdminController.addPermissionColaborator
+);
+route.delete(
+  "/removecolabpermission",
+  AdminTokenValidation,
+  AdminController.removePermissionColaborator
 );
 route.post(
   "/createtype",
@@ -89,9 +100,14 @@ route.post(
 );
 route.get("/gettype/:id", AdminTokenValidation, AdminController.getTypeStore);
 route.patch(
-  "/updatetype/:id",
+  "/updatetypename/:id",
   AdminTokenValidation,
-  AdminController.updateTypeStore
+  AdminController.updateTypeStoreName
+);
+route.patch(
+  "/updatetypeimage/:id",
+  AdminTokenValidation,
+  AdminController.updateTypeStoreImage
 );
 route.delete(
   "/deletetype/:id",
@@ -104,6 +120,33 @@ route.post(
   "/createspec",
   AdminTokenValidation,
   AdminController.createSpecialitieStore
+);
+route.get(
+  "/getspec/:id",
+  AdminTokenValidation,
+  AdminController.getSpecialitieStore
+);
+route.patch(
+  "/updatenamespec/:id",
+  AdminTokenValidation,
+  AdminController.updateNameSpecialitieStore
+);
+route.patch(
+  "/updateimagespec/:id",
+  AdminTokenValidation,
+  AdminController.updateImageSpecialitieStore
+);
+route.delete(
+  "/removespec/:id",
+  AdminTokenValidation,
+  AdminController.deleteSpecialitieStore
+);
+route.post("/addpayment", AdminTokenValidation, AdminController.addPayment);
+route.get("/getpayment/:id", AdminTokenValidation, AdminController.getPayment);
+route.patch(
+  "/updatepayment/:id",
+  AdminTokenValidation,
+  AdminController.updatePayment
 );
 
 export default route;
