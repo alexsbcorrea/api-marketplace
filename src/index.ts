@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import swaggerUI from "swagger-ui-express";
 
 import SourceRoute from "./routes/SourceRoute";
@@ -16,6 +17,8 @@ app.use("/docs", swaggerUI.serve, swaggerUI.setup(SwaggerDOC));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({ origin: "*" }));
 
 app.use("/", SourceRoute);
 app.use("/admin", AdminRoutes);
