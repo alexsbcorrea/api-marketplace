@@ -47,6 +47,11 @@ export default class ColaboratorController {
     return;
   }
 
+  static async addToStoreInternalCategorie(req: Request, res: Response) {
+    res.json({ message: "Obter Perfil Colab" });
+    return;
+  }
+
   static async getInternalCategorie(req: Request, res: Response) {
     res.json({ message: "Obter Perfil Colab" });
     return;

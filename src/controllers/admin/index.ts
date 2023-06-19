@@ -512,6 +512,7 @@ export default class AdminController {
     const colaborator = await prismaClient.colaborator.findUnique({
       where: { id: Number(id_colab) },
       select: {
+        id: true,
         firstname: true,
         lasttname: true,
         cpf: true,
@@ -702,7 +703,7 @@ export default class AdminController {
         .json({ message: "Nenhum colaborador encontrado." });
     }
 
-    return res.status(200).json({ colabs });
+    return res.status(200).json({ allcolaborators: colabs });
   }
   static async getMyColaborators(req: Request, res: Response) {
     const id = req.userID;
@@ -717,7 +718,7 @@ export default class AdminController {
         .json({ message: "Nenhum colaborador encontrado." });
     }
 
-    return res.status(200).json({ mycolabs });
+    return res.status(200).json({ mycolaborators: mycolabs });
   }
   static async addPermissionColaborator(req: Request, res: Response) {
     const id = req.userID;
@@ -984,7 +985,7 @@ export default class AdminController {
         .json({ message: "Nenhum Tipo de Estabelecimento disponível." });
     }
 
-    return res.status(200).json({ types });
+    return res.status(200).json({ alltypes: types });
   }
   static async getMyTypeStore(req: Request, res: Response) {
     const id = req.userID;
@@ -1000,7 +1001,7 @@ export default class AdminController {
         .json({ message: "Nenhum Tipo de Estabelecimento disponível." });
     }
 
-    return res.status(200).json({ types });
+    return res.status(200).json({ mytypes: types });
   }
   static async createSpecialitieStore(req: Request, res: Response) {
     const id = req.userID;
