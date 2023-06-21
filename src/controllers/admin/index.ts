@@ -5,7 +5,7 @@ import "dotenv/config";
 import { GenerateToken } from "../../middlewares/TokenController";
 import { prependListener } from "process";
 
-const typeforToken: String = "admin";
+const typeforToken: string = "admin";
 
 export default class AdminController {
   static async createAdmin(req: Request, res: Response) {
@@ -533,7 +533,7 @@ export default class AdminController {
 
     return res.status(200).json({ colaborator });
   }
-  static async updateColaborator(req: Request, res: Response) {
+  static async updateColaboratorProfile(req: Request, res: Response) {
     const id_colab = req.params.id;
     const { firstname, lasttname, cpf, rg, org_emitter, phone } = req.body;
 
@@ -746,7 +746,7 @@ export default class AdminController {
         },
       });
       return res
-        .status(200)
+        .status(201)
         .json({ message: "Permissão adicionada com sucesso." });
     } catch (error) {
       return res
@@ -791,7 +791,7 @@ export default class AdminController {
   static async createTypeStore(req: Request, res: Response) {
     const id = req.userID;
 
-    const { name, image } = req.body;
+    const { name } = req.body;
 
     if (!name) {
       return res
@@ -803,7 +803,6 @@ export default class AdminController {
       const newType = await prismaClient.typeStore.create({
         data: {
           name,
-          image,
           id_admin: Number(id),
         },
       });
@@ -1007,12 +1006,6 @@ export default class AdminController {
     const id = req.userID;
     const { name } = req.body;
 
-    let image = "";
-
-    if (req.file) {
-      image = req.file.filename;
-    }
-
     if (!name) {
       return res
         .status(422)
@@ -1023,7 +1016,6 @@ export default class AdminController {
       const newspec = await prismaClient.specialitieStore.create({
         data: {
           name,
-          image,
           id_admin: Number(id),
         },
       });
@@ -1057,7 +1049,7 @@ export default class AdminController {
 
     return res.status(200).json({ specialitie });
   }
-  static async updateNameSpecialitieStore(req: Request, res: Response) {
+  static async updateSpecialitieStoreName(req: Request, res: Response) {
     const id = req.userID;
     const id_spec = req.params.id;
     const { name } = req.body;
@@ -1101,7 +1093,7 @@ export default class AdminController {
         .json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
-  static async updateImageSpecialitieStore(req: Request, res: Response) {
+  static async updateSpecialitieStoreImage(req: Request, res: Response) {
     const id = req.userID;
     const id_spec = req.params.id;
     let image = "";
@@ -1177,7 +1169,7 @@ export default class AdminController {
         .json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
-  static async addPayment(req: Request, res: Response) {
+  static async createPayment(req: Request, res: Response) {
     const id = req.userID;
     const { value, reference, date, id_store } = req.body;
     const id_admin = id;
@@ -1259,6 +1251,14 @@ export default class AdminController {
       return res.status(422).json({ message: "O ID da Loja é obrigatório." });
     }
 
+    const CheckPayment = await prismaClient.paymentsforService.findUnique({
+      where: { id: Number(id_pay) },
+    });
+
+    if (!CheckPayment) {
+      return res.status(404).json({ message: "Pagamento não localizado." });
+    }
+
     try {
       const newPayment = await prismaClient.paymentsforService.update({
         where: { id: Number(id_pay) },
@@ -1271,12 +1271,67 @@ export default class AdminController {
         },
       });
       return res
-        .status(201)
+        .status(200)
         .json({ message: "Pagamento atualizado com sucesso." });
     } catch (error) {
       return res
         .status(500)
         .json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
+  }
+  static async deletePayment(req: Request, res: Response) {
+    const id = req.userID;
+    const id_pay = req.params.id;
+
+    if (!id_pay) {
+      return res
+        .status(422)
+        .json({ message: "O ID do Pagamento é obrigatório." });
+    }
+
+    const CheckPayment = await prismaClient.paymentsforService.findUnique({
+      where: { id: Number(id_pay) },
+    });
+
+    if (!CheckPayment) {
+      return res.status(404).json({ message: "Pagamento não localizado." });
+    }
+
+    try {
+      const newPayment = await prismaClient.paymentsforService.delete({
+        where: { id: Number(id_pay) },
+      });
+      return res
+        .status(200)
+        .json({ message: "Pagamento excluído com sucesso." });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+    }
+  }
+  static async getPaymentsforStore(req: Request, res: Response) {
+    const id = req.userID;
+    const id_store = req.params.id;
+
+    if (!id_store) {
+      return res.status(422).json({ message: "O ID do Loja é obrigatório." });
+    }
+
+    const checkStore = await prismaClient.store.findUnique({
+      where: {
+        id: Number(id_store),
+      },
+    });
+
+    if (!checkStore) {
+      return res.status(404).json({ message: "Loja não encontrada." });
+    }
+
+    const payments = await prismaClient.paymentsforService.findMany({
+      where: { id_store: Number(id_store) },
+    });
+
+    return res.status(200).json({ payments });
   }
 }

@@ -17,18 +17,14 @@ route.patch(
   AdminTokenValidation,
   AdminController.updateAdminPassword
 );
-route.delete(
-  "/removeaccount",
-  AdminTokenValidation,
-  AdminController.deleteAdmin
-);
+route.delete("/delete", AdminTokenValidation, AdminController.deleteAdmin);
 route.post(
-  "/newpermission",
+  "/createpermission",
   AdminTokenValidation,
   AdminController.createPermission
 );
 route.get(
-  "/permission/:id",
+  "/getpermission/:id",
   AdminTokenValidation,
   AdminController.getPermission
 );
@@ -53,7 +49,7 @@ route.get(
   AdminController.getMyPermission
 );
 route.post(
-  "/newcolab",
+  "/createcolab",
   AdminTokenValidation,
   AdminController.createColaborator
 );
@@ -63,9 +59,9 @@ route.get(
   AdminController.getColaborator
 );
 route.patch(
-  "/updateprofilecolab/:id",
+  "/updatecolab/:id",
   AdminTokenValidation,
-  AdminController.updateColaborator
+  AdminController.updateColaboratorProfile
 );
 route.patch(
   "/changepasswordcolab/:id",
@@ -73,16 +69,16 @@ route.patch(
   AdminController.updateColaboratorPassword
 );
 route.delete(
-  "/remove/:id",
+  "/deletecolab/:id",
   AdminTokenValidation,
   AdminController.deleteColaborator
 );
-route.get("/mycolabs", AdminTokenValidation, AdminController.getMyColaborators);
 route.get(
   "/allcolabs",
   AdminTokenValidation,
   AdminController.getAllColaborators
 );
+route.get("/mycolabs", AdminTokenValidation, AdminController.getMyColaborators);
 route.post(
   "/addcolabpermission",
   AdminTokenValidation,
@@ -129,24 +125,38 @@ route.get(
 route.patch(
   "/updatenamespec/:id",
   AdminTokenValidation,
-  AdminController.updateNameSpecialitieStore
+  AdminController.updateSpecialitieStoreName
 );
 route.patch(
   "/updateimagespec/:id",
   AdminTokenValidation,
-  AdminController.updateImageSpecialitieStore
+  AdminController.updateSpecialitieStoreImage
 );
 route.delete(
-  "/removespec/:id",
+  "/deletespec/:id",
   AdminTokenValidation,
   AdminController.deleteSpecialitieStore
 );
-route.post("/addpayment", AdminTokenValidation, AdminController.addPayment);
+route.post(
+  "/createpayment",
+  AdminTokenValidation,
+  AdminController.createPayment
+);
 route.get("/getpayment/:id", AdminTokenValidation, AdminController.getPayment);
 route.patch(
   "/updatepayment/:id",
   AdminTokenValidation,
   AdminController.updatePayment
+);
+route.delete(
+  "/deletepayment/:id",
+  AdminTokenValidation,
+  AdminController.deletePayment
+);
+route.get(
+  "/getpaymentsstore/:id",
+  AdminTokenValidation,
+  AdminController.getPaymentsforStore
 );
 
 export default route;

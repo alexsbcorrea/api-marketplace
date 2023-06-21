@@ -48,7 +48,7 @@
       "post": {
         "summary": "Novo Usuário Admin",
         "description": "Rota para cadastro de usuário nível Admin.",
-        "tags": ["admin"],
+        "tags": ["admin-account"],
         "requestBody": {
           "required": true,
           "content": {
@@ -98,7 +98,7 @@
       "post": {
         "summary": "Login de Usuário Admin",
         "description": "Rota para login de usuário nível Admin.",
-        "tags": ["admin"],
+        "tags": ["admin-account"],
         "requestBody": {
           "required": true,
           "content": {
@@ -119,6 +119,9 @@
           }
         },
         "responses": {
+          "404": {
+            "description": "Not Found"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -143,12 +146,15 @@
       "get": {
         "summary": "Obter Perfil de Usuário Admin",
         "description": "Rota para obter informações do usuário nível Admin.",
-        "tags": ["admin"],
+        "tags": ["admin-account"],
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": false
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -172,8 +178,8 @@
     "/admin/updateprofile": {
       "patch": {
         "summary": "Atualizar Perfil de Usuário Admin",
-        "description": "Rota para atualizar cadastro de usuário nível Admin.",
-        "tags": ["admin"],
+        "description": "Rota para atualizar perfil de usuário nível Admin.",
+        "tags": ["admin-account"],
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -198,14 +204,17 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
           "500": {
             "description": "Internal Server Error"
           },
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "content": {
               "aplication/json": {
                 "schema": {
@@ -222,7 +231,7 @@
       "patch": {
         "summary": "Alterar Senha de Usuário Admin",
         "description": "Rota para alterar a senha de usuário nível Admin.",
-        "tags": ["admin"],
+        "tags": ["admin-account"],
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -245,6 +254,9 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -265,16 +277,19 @@
         }
       }
     },
-    "/admin/removeaccount": {
+    "/admin/delete": {
       "delete": {
         "summary": "Excluir Conta de Usuário Admin",
         "description": "Rota para excluir conta do usuário nível Admin.",
-        "tags": ["admin"],
+        "tags": ["admin-account"],
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": false
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Not Found"
           },
@@ -295,11 +310,11 @@
         }
       }
     },
-    "/admin/newpermission": {
+    "/admin/createpermission": {
       "post": {
         "summary": "Nova Permissão",
         "description": "Rota para usuário nível Admin criar nova permissão. As permissões são aplicadas aos Colaboradores.",
-        "tags": ["admin"],
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -321,6 +336,9 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -341,11 +359,11 @@
         }
       }
     },
-    "/admin/permission/{id}": {
+    "/admin/getpermission/{id}": {
       "get": {
-        "summary": "Obter Permissão por ID",
-        "description": "Rota para usuário nível Admin obter dados de permissão por ID.",
-        "tags": ["admin"],
+        "summary": "Obter dados da Permissão",
+        "description": "Rota para usuário nível Admin obter dados de uma permissão.",
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
@@ -359,6 +377,9 @@
           "required": false
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -381,9 +402,9 @@
     },
     "/admin/updatepermission/{id}": {
       "patch": {
-        "summary": "Atualizar Permissão por ID",
-        "description": "Rota para usuário nível Admin atualizar dados de permissão por ID.",
-        "tags": ["admin"],
+        "summary": "Atualizar Permissão",
+        "description": "Rota para usuário nível Admin atualizar dados de uma permissão.",
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
@@ -413,6 +434,9 @@
           }
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -435,9 +459,9 @@
     },
     "/admin/deletepermission/{id}": {
       "delete": {
-        "summary": "Excluir Permissão por ID",
-        "description": "Rota para usuário nível Admin excluir permissão por ID.",
-        "tags": ["admin"],
+        "summary": "Excluir Permissão",
+        "description": "Rota para usuário nível Admin excluir uma permissão.",
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
@@ -451,6 +475,9 @@
           "required": false
         },
         "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
           "422": {
             "description": "Unprocessable Entity"
           },
@@ -475,7 +502,7 @@
       "get": {
         "summary": "Obter Todas as Permissões",
         "description": "Rota para usuário nível Admin listar todas as Permissões disponíveis no Sistema.",
-        "tags": ["admin"],
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [],
         "requestBody": {
@@ -509,7 +536,7 @@
       "get": {
         "summary": "Obter as Permissões do Admin Logado",
         "description": "Rota para usuário nível Admin listar as permissões criadas por ele no Sistema.",
-        "tags": ["admin"],
+        "tags": ["admin-permissions"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [],
         "requestBody": {
@@ -539,35 +566,134 @@
         }
       }
     },
-
-    "/users/edit/{id}": {
-      "patch": {
-        "summary": "Atualizar Perfil do Usuário",
-        "description": "Rota para salvar alterações no perfil do usuário",
-        "tags": ["users"],
+    "/admin/createcolab": {
+      "post": {
+        "summary": "Novo Usuário Colaborador",
+        "description": "Rota para usuário nível Admin cadastrar usuário nível Colaborador.",
+        "tags": ["admin-colaborators"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Create-Colaborator"
+              },
+              "examples": {
+                "Novo Colaborador": {
+                  "value": {
+                    "firstname": "Ana Paula",
+                    "lasttname": "Silva",
+                    "cpf": "111.222.333-44",
+                    "rg": "12345678",
+                    "org_emitter": "SSP-MA",
+                    "phone": "(98) 9 9333-7777",
+                    "email": "anapsilva@gmail.com",
+                    "password": "12345678"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getcolab/{id}": {
+      "get": {
+        "summary": "Obter Perfil de Usuário Colaborador",
+        "description": "Rota para obter informações de um usuário nível Colaborador.",
+        "tags": ["admin-colaborators"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID do Usuário",
+            "description": "ID do Colaborador",
             "required": true
           }
         ],
         "requestBody": {
-          "required": false,
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-Colaborator"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatecolab/{id}": {
+      "patch": {
+        "summary": "Atualizar Perfil de Usuário Colaborador",
+        "description": "Rota para atualizar cadastro de um usuário nível Colaborador.",
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["admin-colaborators"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Colaborador",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "aplication/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/ProfileUser"
+                "$ref": "#/components/schemas/Update-Colaborator"
               },
               "examples": {
-                "Alterar Usuário": {
+                "Atualizar Colaborador": {
                   "value": {
-                    "firstname": "Alex",
-                    "lastname": "Corrêa",
-                    "email": "alex.sandro_as@hotmail.com"
+                    "firstname": "Ana Paula",
+                    "lasttname": "Silva",
+                    "cpf": "111.222.333-44",
+                    "rg": "12345678",
+                    "org_emitter": "SSP-MA",
+                    "phone": "(98) 9 9333-7777",
+                    "email": "anapsilva@gmail.com"
                   }
                 }
               }
@@ -590,7 +716,7 @@
               "aplication/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Response-Update-Profile"
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
                 }
               }
             }
@@ -598,34 +724,189 @@
         }
       }
     },
-    "/users/changepassword/{id}": {
+    "/admin/changepasswordcolab/{id}": {
       "patch": {
-        "summary": "Alterar Senha do Usuário",
-        "description": "Rota para alterar a Senha do usuário",
-        "tags": ["users"],
+        "summary": "Alterar Senha de Usuário Colaborador",
+        "description": "Rota para alterar a senha de um usuário nível Colaborador.",
+        "tags": ["admin-colaborators"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID do Usuário",
+            "description": "ID do Colaborador",
             "required": true
           }
         ],
         "requestBody": {
-          "required": false,
+          "required": true,
           "content": {
             "aplication/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/PasswordUser"
+                "$ref": "#/components/schemas/Update-Password-Colaborator"
               },
               "examples": {
-                "Alterar Senha": {
+                "Atualizar Senha do Colaborador": {
                   "value": {
-                    "currentPassword": "1234@Ae5678",
-                    "newPassword": "8765@Ae4321",
-                    "confirmPassword": "8765@Ae4321"
+                    "currentPassword": "12345678",
+                    "newPassword": "77779999",
+                    "confirmPassword": "77779999"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deletecolab/{id}": {
+      "delete": {
+        "summary": "Excluir Conta de Usuário Colaborador",
+        "description": "Rota para excluir conta de um usuário nível Colaborador.",
+        "tags": ["admin-colaborators"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Colaborador",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/allcolabs": {
+      "get": {
+        "summary": "Obter Todos os Colaboradores",
+        "description": "Rota para usuário nível Admin listar todos os usuários Colaboradores disponíveis no Sistema.",
+        "tags": ["admin-colaborators"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-All-Colaborators"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/mycolabs": {
+      "get": {
+        "summary": "Obter os Colaboradores criados pelo Admin Logado",
+        "description": "Rota para usuário nível Admin listar os usuários Colaboradores cadastrados por ele no Sistema.",
+        "tags": ["admin-colaborators"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-My-Colaborators"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addcolabpermission": {
+      "post": {
+        "summary": "Adicionar Permissão ao Perfil do Colaborador",
+        "description": "Rota para usuário nível Admin atribuir Permissão ao Colaborador.",
+        "tags": ["admin-config-permission"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Add-Permission-Colaborator"
+              },
+              "examples": {
+                "Login do Usuário": {
+                  "value": {
+                    "id_colaborator": 3,
+                    "id_permission": 2
                   }
                 }
               }
@@ -648,7 +929,7 @@
               "aplication/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Responses-User-ChangePassword"
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
                 }
               }
             }
@@ -656,36 +937,473 @@
         }
       }
     },
-    "/users/changephoto/{id}": {
-      "patch": {
-        "summary": "Atualizar Foto de Perfil do Usuário",
-        "description": "Rota para alterar a Foto no Perfil do Usuário",
-        "tags": ["users"],
+    "/admin/removecolabpermission": {
+      "delete": {
+        "summary": "Remover Permissão do Perfil do Colaborador",
+        "description": "Rota para usuário nível Admin remover Permissão do Colaborador.",
+        "tags": ["admin-config-permission"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Remove-Permission-Colaborator"
+              },
+              "examples": {
+                "Login do Usuário": {
+                  "value": {
+                    "id_colaborator": 3,
+                    "id_permission": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/createtype": {
+      "post": {
+        "summary": "Novo Tipo de Estabelecimento",
+        "description": "Rota para usuário nível Admin cadastrar Tipo de Estabelecimento.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Create-Type"
+              },
+              "examples": {
+                "Novo Estabelecimento": {
+                  "value": {
+                    "name": "Mercado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/gettype/{id}": {
+      "get": {
+        "summary": "Obter dados do Tipo de Estabelecimento",
+        "description": "Rota usuário nível Admin obter informações do Tipo de Estabelecimento.",
+        "tags": ["admin-type-store"],
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID do Usuário",
+            "description": "ID do Tipo de Estabelecimento",
             "required": true
           }
         ],
         "requestBody": {
-          "required": false,
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-Type"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatetypename/{id}": {
+      "post": {
+        "summary": "Atualizar Nome do Tipo de Estabelecimento",
+        "description": "Rota para usuário nível Admin atualizar o nome de um Tipo de Estabelecimento.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Tipo de Estabelecimento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Update-Name-Type"
+              },
+              "examples": {
+                "Atualizar Estabelecimento": {
+                  "value": {
+                    "name": "Mercado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatetypeimage/{id}": {
+      "post": {
+        "summary": "Atualizar Foto do Tipo de Estabelecimento",
+        "description": "Rota para usuário nível Admin atualizar a foto de um Tipo de Estabelecimento.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Tipo de Estabelecimento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "image/png": {
               "schema": {
                 "type": "string",
                 "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deletetype/{id}": {
+      "delete": {
+        "summary": "Excluir Tipo de Estabelecimento",
+        "description": "Rota para usuário nível Admin excluir um Tipo de Estabelecimento.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Tipo de Estabelecimento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/alltypes": {
+      "get": {
+        "summary": "Obter Todos os Tipos de Estabelecimento",
+        "description": "Rota para usuário nível Admin obter todos os Tipos de Estabelecimento disponíveis no Sistema.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-All-Types"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/mytypes": {
+      "get": {
+        "summary": "Obter os Tipos de Estabelecimentos criados pelo Admin Logado",
+        "description": "Rota para usuário nível Admin listar os Tipos de Estabelecimentos criados por ele no Sistema.",
+        "tags": ["admin-type-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-My-Types"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/createspec": {
+      "post": {
+        "summary": "Nova Especialidade de Estabelecimento",
+        "description": "Rota para usuário nível Admin cadastrar de Especialidade de Estabelecimento.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Create-Specialitie"
               },
               "examples": {
-                "Alterar Usuário": {
+                "Novo Estabelecimento": {
                   "value": {
-                    "firstname": "Alex",
-                    "lastname": "Corrêa",
-                    "email": "alex.sandro_as@hotmail.com",
-                    "password": "teste@1234",
-                    "confirmPassword": "teste@1234"
+                    "name": "Açougue"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getspec/{id}": {
+      "get": {
+        "summary": "Obter dados da Especialidade de Estabelecimento",
+        "description": "Rota para usuário nível Admin obter os dados de uma Especialidade de Estabelecimento.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da Especialidade",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-Specialitie"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatenamespec/{id}": {
+      "patch": {
+        "summary": "Atualizar Nome da Especialidade de Estabelecimento",
+        "description": "Rota para usuário nível Admin atualizar o nome de uma Especialidade de Estabelecimento.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da Especialidade",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Update-Name-Specialitie"
+              },
+              "examples": {
+                "Atualizar Especialidade": {
+                  "value": {
+                    "name": "Açougue"
                   }
                 }
               }
@@ -708,7 +1426,330 @@
               "aplication/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Response-Change-Photo"
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updateimagespec/{id}": {
+      "patch": {
+        "summary": "Atualizar Foto da Especialidade de Estabelecimento",
+        "description": "Rota para usuário nível Admin atualizar a foto de uma Especialidade de Estabelecimento.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da Especialidade",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deletespec/{id}": {
+      "delete": {
+        "summary": "Excluir Especialidade de Estabelecimento",
+        "description": "Rota para usuário nível Admin excluir uma Especialidade de Estabelecimento.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da Especialidade",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/createpayment": {
+      "post": {
+        "summary": "Novo Pagamento de Mensalidade",
+        "description": "Rota para usuário nível Admin cadastrar pagamento de mensalidade.",
+        "tags": ["admin-payment-store"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Create-Payment"
+              },
+              "examples": {
+                "Novo Pagamento": {
+                  "value": {
+                    "value": 100,
+                    "reference": "Junho",
+                    "date": "01/06/2023",
+                    "id_store": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getpayment/{id}": {
+      "get": {
+        "summary": "Obter dados de um Pagamento de Mensalidade",
+        "description": "Rota para usuário nível Admin atualizar os dados de um pagamento de mensalidade.",
+        "tags": ["admin-payment-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Pagamento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-Payment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatepayment/{id}": {
+      "post": {
+        "summary": "Atualizar Pagamento de Mensalidade",
+        "description": "Rota para usuário nível Admin atualizar um pagamento de mensalidade.",
+        "tags": ["admin-payment-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Pagamento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Update-Payment"
+              },
+              "examples": {
+                "Atualizar Pagamento": {
+                  "value": {
+                    "value": 100,
+                    "reference": "Junho",
+                    "date": "01/06/2023",
+                    "id_store": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/deletepayment/{id}": {
+      "get": {
+        "summary": "Excluir um Pagamento de Mensalidade",
+        "description": "Rota para usuário nível Admin excluir um pagamento de mensalidade.",
+        "tags": ["admin-payment-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do Pagamento",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getpaymentsstore/{id}": {
+      "get": {
+        "summary": "Obter Todos os Pagamento de uma Loja",
+        "description": "Rota para usuário nível Admin listar os pagamentos de uma Loja.",
+        "tags": ["admin-payment-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID da Loja",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-PaymentsforStore"
                 }
               }
             }
@@ -746,10 +1787,10 @@
             "type": "string"
           },
           "password": {
-            "type": "boolean"
+            "type": "string"
           },
           "confirmPassword": {
-            "type": "boolean"
+            "type": "string"
           }
         }
       },
@@ -771,7 +1812,7 @@
             "type": "string"
           },
           "firstname": {
-            "type": "integer"
+            "type": "string"
           },
           "lastname": {
             "type": "string"
@@ -806,13 +1847,13 @@
                 "type": "string"
               },
               "email": {
-                "type": "boolean"
+                "type": "string"
               },
               "createdAt": {
-                "type": "boolean"
+                "type": "string"
               },
               "updatedAt": {
-                "type": "boolean"
+                "type": "string"
               }
             }
           }
@@ -986,10 +2027,10 @@
             "type": "string"
           },
           "email": {
-            "type": "boolean"
+            "type": "string"
           },
           "password": {
-            "type": "boolean"
+            "type": "string"
           }
         }
       },
@@ -1021,16 +2062,16 @@
                 "type": "string"
               },
               "email": {
-                "type": "boolean"
+                "type": "string"
               },
               "id_admin": {
-                "type": "boolean"
+                "type": "integer"
               },
               "createdAt": {
-                "type": "boolean"
+                "type": "string"
               },
               "updatedAt": {
-                "type": "boolean"
+                "type": "string"
               }
             }
           }
@@ -1058,7 +2099,7 @@
             "type": "string"
           },
           "email": {
-            "type": "boolean"
+            "type": "string"
           }
         }
       },
@@ -1072,200 +2113,6 @@
             "type": "string"
           },
           "confirmPassword": {
-            "type": "string"
-          }
-        }
-      },
-      "Add-Permission-Colaborator": {
-        "type": "object",
-        "properties": {
-          "id_colaborator": {
-            "type": "integer"
-          },
-          "id_permission": {
-            "type": "integer"
-          }
-        }
-      },
-      "Remove-Permission-Colaborator": {
-        "type": "object",
-        "properties": {
-          "id_colaborator": {
-            "type": "integer"
-          },
-          "id_permission": {
-            "type": "integer"
-          }
-        }
-      },
-      "Create-Type": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          }
-        }
-      },
-      "Update-Name-Type": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "Update-Image-Type": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "type": "string"
-          }
-        }
-      },
-      "Get-Type": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              },
-              "name": {
-                "type": "string"
-              },
-              "image": {
-                "type": "string"
-              },
-              "id_admin": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "updatedAt": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "Get-All-Types": {
-        "type": "object",
-        "properties": {
-          "alltypes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "image": {
-                  "type": "string"
-                },
-                "id_admin": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "Get-My-Types": {
-        "type": "object",
-        "properties": {
-          "mytypes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "image": {
-                  "type": "string"
-                },
-                "id_admin": {
-                  "type": "string"
-                },
-                "createdAt": {
-                  "type": "string"
-                },
-                "updatedAt": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "Create-Specialitie": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          }
-        }
-      },
-      "Get-Specialitie": {
-        "type": "object",
-        "properties": {
-          "specialitie": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              },
-              "name": {
-                "type": "string"
-              },
-              "image": {
-                "type": "string"
-              },
-              "id_admin": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "updatedAt": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "Update-Name-Specialitie": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "Update-Image-Specialitie": {
-        "type": "object",
-        "properties": {
-          "image": {
             "type": "string"
           }
         }
@@ -1300,16 +2147,16 @@
                   "type": "string"
                 },
                 "email": {
-                  "type": "boolean"
+                  "type": "string"
                 },
                 "id_admin": {
-                  "type": "boolean"
+                  "type": "integer"
                 },
                 "createdAt": {
-                  "type": "boolean"
+                  "type": "string"
                 },
                 "updatedAt": {
-                  "type": "boolean"
+                  "type": "string"
                 }
               }
             }
@@ -1346,19 +2193,207 @@
                   "type": "string"
                 },
                 "email": {
-                  "type": "boolean"
+                  "type": "string"
                 },
                 "id_admin": {
-                  "type": "boolean"
+                  "type": "integer"
                 },
                 "createdAt": {
-                  "type": "boolean"
+                  "type": "string"
                 },
                 "updatedAt": {
-                  "type": "boolean"
+                  "type": "string"
                 }
               }
             }
+          }
+        }
+      },
+      "Add-Permission-Colaborator": {
+        "type": "object",
+        "properties": {
+          "id_colaborator": {
+            "type": "integer"
+          },
+          "id_permission": {
+            "type": "integer"
+          }
+        }
+      },
+      "Remove-Permission-Colaborator": {
+        "type": "object",
+        "properties": {
+          "id_colaborator": {
+            "type": "integer"
+          },
+          "id_permission": {
+            "type": "integer"
+          }
+        }
+      },
+      "Create-Type": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Get-Type": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "id_admin": {
+                "type": "integer"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Update-Name-Type": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Update-Image-Type": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "Get-All-Types": {
+        "type": "object",
+        "properties": {
+          "alltypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "id_admin": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Get-My-Types": {
+        "type": "object",
+        "properties": {
+          "mytypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "id_admin": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Create-Specialitie": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Get-Specialitie": {
+        "type": "object",
+        "properties": {
+          "specialitie": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "id_admin": {
+                "type": "integer"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Update-Name-Specialitie": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Update-Image-Specialitie": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string"
           }
         }
       },
@@ -1366,7 +2401,7 @@
         "type": "object",
         "properties": {
           "value": {
-            "type": "integer"
+            "type": "string"
           },
           "reference": {
             "type": "string"
@@ -1375,7 +2410,7 @@
             "type": "string"
           },
           "id_store": {
-            "type": "string"
+            "type": "integer"
           }
         }
       },
@@ -1389,7 +2424,7 @@
                 "type": "integer"
               },
               "value": {
-                "type": "integer"
+                "type": "string"
               },
               "reference": {
                 "type": "string"
@@ -1417,7 +2452,7 @@
         "type": "object",
         "properties": {
           "value": {
-            "type": "integer"
+            "type": "string"
           },
           "reference": {
             "type": "string"
@@ -1427,6 +2462,43 @@
           },
           "id_store": {
             "type": "string"
+          }
+        }
+      },
+      "Get-PaymentsforStore": {
+        "type": "object",
+        "properties": {
+          "payments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "reference": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "id_store": {
+                  "type": "string"
+                },
+                "id_admin": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
