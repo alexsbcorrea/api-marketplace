@@ -3,21 +3,12 @@ import prismaClient from "../../db/prismaClient";
 import "dotenv/config";
 
 import { GenerateToken } from "../../middlewares/TokenController";
-import { prependListener } from "process";
 
 const typeforToken: string = "admin";
 
 export default class AdminController {
   static async createAdmin(req: Request, res: Response) {
-    const {
-      firstname,
-      lastname,
-      cpf,
-      phone,
-      email,
-      confirmPassword,
-      password,
-    } = req.body;
+    const { firstname, lastname, cpf, phone, email, confirmPassword, password } = req.body;
 
     if (!firstname) {
       return res.status(422).json({
@@ -228,9 +219,7 @@ export default class AdminController {
     }
 
     if (newPassword != confirmPassword) {
-      return res
-        .status(422)
-        .json({ message: "A Nova Senha e a Confirmação não correspondem." });
+      return res.status(422).json({ message: "A Nova Senha e a Confirmação não correspondem." });
     }
 
     try {
@@ -243,9 +232,7 @@ export default class AdminController {
       return res.status(200).json({ message: "Senha alterada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deleteAdmin(req: Request, res: Response) {
@@ -278,9 +265,7 @@ export default class AdminController {
     const { name, description } = req.body;
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome da Permissão é obrigatório" });
+      return res.status(422).json({ message: "O Nome da Permissão é obrigatório" });
     }
 
     try {
@@ -294,9 +279,7 @@ export default class AdminController {
       return res.status(201).json({ message: "Permissão criada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getPermission(req: Request, res: Response) {
@@ -304,9 +287,7 @@ export default class AdminController {
     const id_permission = req.params.id;
 
     if (!id_permission) {
-      return res
-        .status(422)
-        .json({ message: "O ID da Permissão é obrigatório." });
+      return res.status(422).json({ message: "O ID da Permissão é obrigatório." });
     }
 
     const permission = await prismaClient.permission.findUnique({
@@ -326,9 +307,7 @@ export default class AdminController {
     const { name, description } = req.body;
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome da Permissão é obrigatório." });
+      return res.status(422).json({ message: "O Nome da Permissão é obrigatório." });
     }
 
     const permissionCheck = await prismaClient.permission.findUnique({
@@ -347,14 +326,10 @@ export default class AdminController {
           description,
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Permissão Atualizada com sucesso." });
+      return res.status(200).json({ message: "Permissão Atualizada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deletePermission(req: Request, res: Response) {
@@ -373,14 +348,10 @@ export default class AdminController {
       const permission = await prismaClient.permission.delete({
         where: { id: Number(id_permission) },
       });
-      return res
-        .status(200)
-        .json({ message: "Permissão Removida com sucesso." });
+      return res.status(200).json({ message: "Permissão Removida com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor. Tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor. Tente novamente mais tarde." });
     }
   }
   static async getAllPermissions(req: Request, res: Response) {
@@ -389,9 +360,7 @@ export default class AdminController {
     });
 
     if (allpermissions.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum Permissão foi encontrada." });
+      return res.status(404).json({ message: "Nenhum Permissão foi encontrada." });
     }
 
     res.status(200).json({ allpermissions });
@@ -405,66 +374,41 @@ export default class AdminController {
     });
 
     if (mypermissions.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum Permissão foi encontrada." });
+      return res.status(404).json({ message: "Nenhum Permissão foi encontrada." });
     }
 
     res.status(200).json({ mypermissions });
   }
   static async createColaborator(req: Request, res: Response) {
     const id = req.userID;
-    const {
-      firstname,
-      lasttname,
-      cpf,
-      rg,
-      org_emitter,
-      phone,
-      email,
-      password,
-    } = req.body;
+    const { firstname, lasttname, cpf, rg, org_emitter, phone, email, password } = req.body;
 
     if (!firstname) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!lasttname) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!cpf) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!rg) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!org_emitter) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!phone) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!email) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     const checkEmail = await prismaClient.colaborator.findFirst({
@@ -494,9 +438,7 @@ export default class AdminController {
       return res.status(201).json({ message: "Cadastro criado com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getColaborator(req: Request, res: Response) {
@@ -504,9 +446,7 @@ export default class AdminController {
     const id_colab = req.params.id;
 
     if (!id_colab) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Colaborador é obrigatório." });
+      return res.status(422).json({ message: "O ID do Colaborador é obrigatório." });
     }
 
     const colaborator = await prismaClient.colaborator.findUnique({
@@ -538,9 +478,7 @@ export default class AdminController {
     const { firstname, lasttname, cpf, rg, org_emitter, phone } = req.body;
 
     if (!id_colab) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Colaborador é obrigatório." });
+      return res.status(422).json({ message: "O ID do Colaborador é obrigatório." });
     }
 
     const checkColab = await prismaClient.colaborator.findUnique({
@@ -552,9 +490,7 @@ export default class AdminController {
     }
 
     if (!firstname) {
-      return res
-        .status(422)
-        .json({ message: "O Primeiro Nome é obrigatório." });
+      return res.status(422).json({ message: "O Primeiro Nome é obrigatório." });
     }
 
     if (!lasttname) {
@@ -570,9 +506,7 @@ export default class AdminController {
     }
 
     if (!org_emitter) {
-      return res
-        .status(422)
-        .json({ message: "O Orgão Emissor é obrigatório." });
+      return res.status(422).json({ message: "O Orgão Emissor é obrigatório." });
     }
 
     if (!phone) {
@@ -591,14 +525,10 @@ export default class AdminController {
           phone,
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Cadastro atualizado com sucesso." });
+      return res.status(200).json({ message: "Cadastro atualizado com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async updateColaboratorPassword(req: Request, res: Response) {
@@ -606,9 +536,7 @@ export default class AdminController {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (!id_colab) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Colaborador é obrigatório." });
+      return res.status(422).json({ message: "O ID do Colaborador é obrigatório." });
     }
 
     if (!currentPassword) {
@@ -620,9 +548,7 @@ export default class AdminController {
     }
 
     if (!confirmPassword) {
-      return res
-        .status(422)
-        .json({ message: "A Confirmação de Senha é obrigatória." });
+      return res.status(422).json({ message: "A Confirmação de Senha é obrigatória." });
     }
 
     const checkColab = await prismaClient.colaborator.findUnique({
@@ -638,9 +564,7 @@ export default class AdminController {
     }
 
     if (newPassword != confirmPassword) {
-      return res
-        .status(422)
-        .json({ message: "A Nova Senha e a Confirmação não correspondem." });
+      return res.status(422).json({ message: "A Nova Senha e a Confirmação não correspondem." });
     }
 
     try {
@@ -653,9 +577,7 @@ export default class AdminController {
       return res.status(200).json({ message: "Senha atualizada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deleteColaborator(req: Request, res: Response) {
@@ -663,9 +585,7 @@ export default class AdminController {
     const id_colab = req.params.id;
 
     if (!id_colab) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Colaborador é obrigatório." });
+      return res.status(422).json({ message: "O ID do Colaborador é obrigatório." });
     }
 
     const checkColab = await prismaClient.colaborator.findUnique({
@@ -682,14 +602,10 @@ export default class AdminController {
           id: Number(id_colab),
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Colaborador excluído com sucesso." });
+      return res.status(200).json({ message: "Colaborador excluído com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getAllColaborators(req: Request, res: Response) {
@@ -698,9 +614,7 @@ export default class AdminController {
     const colabs = await prismaClient.colaborator.findMany();
 
     if (colabs.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum colaborador encontrado." });
+      return res.status(404).json({ message: "Nenhum colaborador encontrado." });
     }
 
     return res.status(200).json({ allcolaborators: colabs });
@@ -713,9 +627,7 @@ export default class AdminController {
     });
 
     if (mycolabs.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum colaborador encontrado." });
+      return res.status(404).json({ message: "Nenhum colaborador encontrado." });
     }
 
     return res.status(200).json({ mycolaborators: mycolabs });
@@ -726,15 +638,13 @@ export default class AdminController {
 
     if (!id_colaborator) {
       return res.status(422).json({
-        message:
-          "O ID do Colaborador é obrigatório para adicionar uma Permissão.",
+        message: "O ID do Colaborador é obrigatório para adicionar uma Permissão.",
       });
     }
 
     if (!id_permission) {
       return res.status(422).json({
-        message:
-          "O ID da Permissão é obrigatório para vincular ao Colaborador.",
+        message: "O ID da Permissão é obrigatório para vincular ao Colaborador.",
       });
     }
 
@@ -745,13 +655,9 @@ export default class AdminController {
           id_permission,
         },
       });
-      return res
-        .status(201)
-        .json({ message: "Permissão adicionada com sucesso." });
+      return res.status(201).json({ message: "Permissão adicionada com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async removePermissionColaborator(req: Request, res: Response) {
@@ -766,26 +672,20 @@ export default class AdminController {
 
     if (!id_permission) {
       return res.status(422).json({
-        message:
-          "O ID da Permissão é obrigatório para desvincular do Colaborador.",
+        message: "O ID da Permissão é obrigatório para desvincular do Colaborador.",
       });
     }
 
     try {
-      const removePermission =
-        await prismaClient.colaborator_Permission.deleteMany({
-          where: {
-            id_colaborator,
-            id_permission,
-          },
-        });
-      return res
-        .status(200)
-        .json({ message: "Permissão excluída com sucesso." });
+      const removePermission = await prismaClient.colaborator_Permission.deleteMany({
+        where: {
+          id_colaborator,
+          id_permission,
+        },
+      });
+      return res.status(200).json({ message: "Permissão excluída com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async createTypeStore(req: Request, res: Response) {
@@ -794,9 +694,7 @@ export default class AdminController {
     const { name } = req.body;
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O Nome do Tipo de Estabelecimento é obrigatório." });
     }
 
     try {
@@ -806,13 +704,9 @@ export default class AdminController {
           id_admin: Number(id),
         },
       });
-      return res
-        .status(201)
-        .json({ message: "Tipo de Estabelecimento criado com sucesso." });
+      return res.status(201).json({ message: "Tipo de Estabelecimento criado com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getTypeStore(req: Request, res: Response) {
@@ -820,9 +714,7 @@ export default class AdminController {
     const id_type = req.params.id;
 
     if (!id_type) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
     }
 
     const type = await prismaClient.typeStore.findUnique({
@@ -832,9 +724,7 @@ export default class AdminController {
     });
 
     if (!type) {
-      return res
-        .status(404)
-        .json({ message: "Tipo de Estabelecimento não encontrado." });
+      return res.status(404).json({ message: "Tipo de Estabelecimento não encontrado." });
     }
 
     return res.status(200).json({ type });
@@ -845,15 +735,11 @@ export default class AdminController {
     const { name } = req.body;
 
     if (!id_type) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
     }
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O Nome do Tipo de Estabelecimento é obrigatório." });
     }
 
     const type = await prismaClient.typeStore.findUnique({
@@ -863,9 +749,7 @@ export default class AdminController {
     });
 
     if (!type) {
-      return res
-        .status(404)
-        .json({ message: "Tipo de Estabelecimento não encontrado." });
+      return res.status(404).json({ message: "Tipo de Estabelecimento não encontrado." });
     }
 
     try {
@@ -875,14 +759,10 @@ export default class AdminController {
           name,
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Tipo de Estabelecimento atualizado com sucesso." });
+      return res.status(200).json({ message: "Tipo de Estabelecimento atualizado com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async updateTypeStoreImage(req: Request, res: Response) {
@@ -899,9 +779,7 @@ export default class AdminController {
     }
 
     if (!id_type) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
     }
 
     const type = await prismaClient.typeStore.findUnique({
@@ -911,9 +789,7 @@ export default class AdminController {
     });
 
     if (!type) {
-      return res
-        .status(404)
-        .json({ message: "Tipo de Estabelecimento não encontrado." });
+      return res.status(404).json({ message: "Tipo de Estabelecimento não encontrado." });
     }
 
     try {
@@ -928,9 +804,7 @@ export default class AdminController {
       });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deleteTypeStore(req: Request, res: Response) {
@@ -938,9 +812,7 @@ export default class AdminController {
     const id_type = req.params.id;
 
     if (!id_type) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
+      return res.status(422).json({ message: "O ID do Tipo de Estabelecimento é obrigatório." });
     }
 
     const type = await prismaClient.typeStore.findUnique({
@@ -950,9 +822,7 @@ export default class AdminController {
     });
 
     if (!type) {
-      return res
-        .status(404)
-        .json({ message: "Tipo de Estabelecimento não encontrado." });
+      return res.status(404).json({ message: "Tipo de Estabelecimento não encontrado." });
     }
 
     try {
@@ -961,14 +831,10 @@ export default class AdminController {
           id: Number(id_type),
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Tipo de Estabelecimento excluído com sucesso." });
+      return res.status(200).json({ message: "Tipo de Estabelecimento excluído com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getAllTypeStore(req: Request, res: Response) {
@@ -979,9 +845,7 @@ export default class AdminController {
     });
 
     if (types.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum Tipo de Estabelecimento disponível." });
+      return res.status(404).json({ message: "Nenhum Tipo de Estabelecimento disponível." });
     }
 
     return res.status(200).json({ alltypes: types });
@@ -995,9 +859,7 @@ export default class AdminController {
     });
 
     if (types.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Nenhum Tipo de Estabelecimento disponível." });
+      return res.status(404).json({ message: "Nenhum Tipo de Estabelecimento disponível." });
     }
 
     return res.status(200).json({ mytypes: types });
@@ -1007,9 +869,7 @@ export default class AdminController {
     const { name } = req.body;
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O Nome da Especialidade é obrigatório." });
     }
 
     try {
@@ -1019,14 +879,10 @@ export default class AdminController {
           id_admin: Number(id),
         },
       });
-      return res
-        .status(201)
-        .json({ message: "Especialidade criada com sucesso." });
+      return res.status(201).json({ message: "Especialidade criada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getSpecialitieStore(req: Request, res: Response) {
@@ -1034,9 +890,7 @@ export default class AdminController {
     const id_spec = req.params.id;
 
     if (!id_spec) {
-      return res
-        .status(422)
-        .json({ message: "O ID da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O ID da Especialidade é obrigatório." });
     }
 
     const specialitie = await prismaClient.specialitieStore.findUnique({
@@ -1055,15 +909,11 @@ export default class AdminController {
     const { name } = req.body;
 
     if (!id_spec) {
-      return res
-        .status(422)
-        .json({ message: "O ID da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O ID da Especialidade é obrigatório." });
     }
 
     if (!name) {
-      return res
-        .status(422)
-        .json({ message: "O Nome da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O Nome da Especialidade é obrigatório." });
     }
 
     const CheckSpec = await prismaClient.specialitieStore.findUnique({
@@ -1083,14 +933,10 @@ export default class AdminController {
           name,
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Especialidade atualizada com sucesso." });
+      return res.status(200).json({ message: "Especialidade atualizada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async updateSpecialitieStoreImage(req: Request, res: Response) {
@@ -1099,9 +945,7 @@ export default class AdminController {
     let image = "";
 
     if (!id_spec) {
-      return res
-        .status(422)
-        .json({ message: "O ID da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O ID da Especialidade é obrigatório." });
     }
 
     const CheckSpec = await prismaClient.specialitieStore.findUnique({
@@ -1125,14 +969,10 @@ export default class AdminController {
           image,
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Foto da Especialidade atualizada com sucesso." });
+      return res.status(200).json({ message: "Foto da Especialidade atualizada com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deleteSpecialitieStore(req: Request, res: Response) {
@@ -1140,9 +980,7 @@ export default class AdminController {
     const id_spec = req.params.id;
 
     if (!id_spec) {
-      return res
-        .status(422)
-        .json({ message: "O ID da Especialidade é obrigatório." });
+      return res.status(422).json({ message: "O ID da Especialidade é obrigatório." });
     }
 
     const CheckSpec = await prismaClient.specialitieStore.findUnique({
@@ -1159,14 +997,10 @@ export default class AdminController {
       const removeSpec = await prismaClient.specialitieStore.delete({
         where: { id: Number(id_spec) },
       });
-      return res
-        .status(200)
-        .json({ message: "Especialidade excluída com sucesso." });
+      return res.status(200).json({ message: "Especialidade excluída com sucesso." });
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getAllSpecialitieStore(req: Request, res: Response) {
@@ -1206,19 +1040,13 @@ export default class AdminController {
     const id_admin = id;
 
     if (!value) {
-      return res
-        .status(422)
-        .json({ message: "O Valor do Pagamento é obrigatório." });
+      return res.status(422).json({ message: "O Valor do Pagamento é obrigatório." });
     }
     if (!reference) {
-      return res
-        .status(422)
-        .json({ message: "O Mês de Referência do Pagamento é obrigatório." });
+      return res.status(422).json({ message: "O Mês de Referência do Pagamento é obrigatório." });
     }
     if (!date) {
-      return res
-        .status(422)
-        .json({ message: "A Data do Pagamento é obrigatória." });
+      return res.status(422).json({ message: "A Data do Pagamento é obrigatória." });
     }
     if (!id_store) {
       return res.status(422).json({ message: "O ID da Loja é obrigatório." });
@@ -1234,13 +1062,9 @@ export default class AdminController {
           id_admin: Number(id_admin),
         },
       });
-      return res
-        .status(201)
-        .json({ message: "Pagamento cadastrado com sucesso." });
+      return res.status(201).json({ message: "Pagamento cadastrado com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getPayment(req: Request, res: Response) {
@@ -1264,19 +1088,13 @@ export default class AdminController {
     const id_admin = id;
 
     if (!value) {
-      return res
-        .status(422)
-        .json({ message: "O Valor do Pagamento é obrigatório." });
+      return res.status(422).json({ message: "O Valor do Pagamento é obrigatório." });
     }
     if (!reference) {
-      return res
-        .status(422)
-        .json({ message: "O Mês de Referência do Pagamento é obrigatório." });
+      return res.status(422).json({ message: "O Mês de Referência do Pagamento é obrigatório." });
     }
     if (!date) {
-      return res
-        .status(422)
-        .json({ message: "A Data do Pagamento é obrigatória." });
+      return res.status(422).json({ message: "A Data do Pagamento é obrigatória." });
     }
     if (!id_store) {
       return res.status(422).json({ message: "O ID da Loja é obrigatório." });
@@ -1301,13 +1119,9 @@ export default class AdminController {
           id_admin: Number(id_admin),
         },
       });
-      return res
-        .status(200)
-        .json({ message: "Pagamento atualizado com sucesso." });
+      return res.status(200).json({ message: "Pagamento atualizado com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async deletePayment(req: Request, res: Response) {
@@ -1315,9 +1129,7 @@ export default class AdminController {
     const id_pay = req.params.id;
 
     if (!id_pay) {
-      return res
-        .status(422)
-        .json({ message: "O ID do Pagamento é obrigatório." });
+      return res.status(422).json({ message: "O ID do Pagamento é obrigatório." });
     }
 
     const CheckPayment = await prismaClient.paymentsforService.findUnique({
@@ -1332,13 +1144,9 @@ export default class AdminController {
       const newPayment = await prismaClient.paymentsforService.delete({
         where: { id: Number(id_pay) },
       });
-      return res
-        .status(200)
-        .json({ message: "Pagamento excluído com sucesso." });
+      return res.status(200).json({ message: "Pagamento excluído com sucesso." });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "Erro no Servidor, tente novamente mais tarde." });
+      return res.status(500).json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
   static async getPaymentsforStore(req: Request, res: Response) {

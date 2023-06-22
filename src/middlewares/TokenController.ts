@@ -20,42 +20,21 @@ export interface JWTDecode {
   iat: Number;
 }
 
-export async function GenerateToken(
-  type: String,
-  user: User,
-  req: Request,
-  res: Response
-) {
+export async function GenerateToken(type: String, user: User, req: Request, res: Response) {
   let token: string = "";
   if (type == "admin") {
-    token = jwt.sign(
-      { id: user.id, firstname: user.firstname, email: user.email },
-      adminSecret
-    );
+    token = jwt.sign({ id: user.id, firstname: user.firstname, email: user.email }, adminSecret);
   } else if (type == "colab") {
-    token = jwt.sign(
-      { id: user.id, firstname: user.firstname, email: user.email },
-      colabSecret
-    );
+    token = jwt.sign({ id: user.id, firstname: user.firstname, email: user.email }, colabSecret);
   } else if (type == "owner") {
-    token = jwt.sign(
-      { id: user.id, firstname: user.firstname, email: user.email },
-      ownerSecret
-    );
+    token = jwt.sign({ id: user.id, firstname: user.firstname, email: user.email }, ownerSecret);
   } else if (type == "client") {
-    token = jwt.sign(
-      { id: user.id, firstname: user.firstname, email: user.email },
-      clientSecret
-    );
+    token = jwt.sign({ id: user.id, firstname: user.firstname, email: user.email }, clientSecret);
   }
   return token;
 }
 
-export function AdminTokenValidation(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function AdminTokenValidation(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -74,11 +53,7 @@ export function AdminTokenValidation(
   }
 }
 
-export function ColabTokenValidation(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function ColabTokenValidation(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -97,11 +72,7 @@ export function ColabTokenValidation(
   }
 }
 
-export function OwnerTokenValidation(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function OwnerTokenValidation(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -120,11 +91,7 @@ export function OwnerTokenValidation(
   }
 }
 
-export function ClientTokenValidation(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function ClientTokenValidation(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
