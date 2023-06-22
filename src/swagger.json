@@ -1524,6 +1524,74 @@
         }
       }
     },
+    "/admin/getallspecs": {
+      "get": {
+        "summary": "Obter Todos as Especialidades de Estabelecimento",
+        "description": "Rota para usuário nível Admin obter todas as Especialidades de Estabelecimento disponíveis no Sistema.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-All-Specialitie"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getmyspecs": {
+      "get": {
+        "summary": "Obter as Especialidades de Estabelecimento criadas pelo Admin Logado",
+        "description": "Rota para usuário nível Admin listar as Especialidades de Estabelecimentos criadas por ele no Sistema.",
+        "tags": ["admin-specialitie-store"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-My-Specialitie"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/createpayment": {
       "post": {
         "summary": "Novo Pagamento de Mensalidade",
@@ -2394,6 +2462,68 @@
         "properties": {
           "image": {
             "type": "string"
+          }
+        }
+      },
+      "Get-All-Specialitie": {
+        "type": "object",
+        "properties": {
+          "allspecialities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "id_admin": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Get-My-Specialitie": {
+        "type": "object",
+        "properties": {
+          "myspecialities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string"
+                },
+                "id_admin": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },

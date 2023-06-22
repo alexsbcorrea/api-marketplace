@@ -137,6 +137,16 @@ route.delete(
   AdminTokenValidation,
   AdminController.deleteSpecialitieStore
 );
+route.get(
+  "/getallspecs",
+  AdminTokenValidation,
+  AdminController.getAllSpecialitieStore
+);
+route.get(
+  "/getmyspecs",
+  AdminTokenValidation,
+  AdminController.getMySpecialitieStore
+);
 route.post(
   "/createpayment",
   AdminTokenValidation,

@@ -1169,6 +1169,37 @@ export default class AdminController {
         .json({ message: "Erro no Servidor, tente novamente mais tarde." });
     }
   }
+  static async getAllSpecialitieStore(req: Request, res: Response) {
+    const id = req.userID;
+
+    const specialities = await prismaClient.specialitieStore.findMany({
+      orderBy: [{ name: "asc" }],
+    });
+
+    if (specialities.length == 0) {
+      return res.status(404).json({
+        message: "Nenhuma Especialidade de Estabelecimento disponível.",
+      });
+    }
+
+    return res.status(200).json({ allspecialities: specialities });
+  }
+  static async getMySpecialitieStore(req: Request, res: Response) {
+    const id = req.userID;
+
+    const specialities = await prismaClient.specialitieStore.findMany({
+      where: { id_admin: Number(id) },
+      orderBy: [{ name: "asc" }],
+    });
+
+    if (specialities.length == 0) {
+      return res.status(404).json({
+        message: "Nenhuma Especialidade de Estabelecimento disponível.",
+      });
+    }
+
+    return res.status(200).json({ myspecialities: specialities });
+  }
   static async createPayment(req: Request, res: Response) {
     const id = req.userID;
     const { value, reference, date, id_store } = req.body;
