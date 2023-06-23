@@ -1,10 +1,100 @@
 import { Request, Response, NextFunction } from "express";
 import prismaClient from "../../db/prismaClient";
 
+import { GenerateToken } from "../../middlewares/TokenController";
+const typeforToken = "owner";
+
 export default class ColaboratorController {
   static async createOwner(req: Request, res: Response) {
-    res.json({ message: "Obter Perfil Colab" });
-    return;
+    const {
+      firstname,
+      lastname,
+      cpf,
+      rg,
+      org_emitter,
+      phone,
+      email,
+      password,
+      confirmPassword,
+    } = req.body;
+
+    const level: string = "owner";
+
+    const errors = [];
+
+    if (!firstname) {
+      errors.push({ message: "O Nome é obrigatório." });
+    }
+    if (!lastname) {
+      errors.push({ message: "O Sobrenome é obrigatório." });
+    }
+    if (!cpf) {
+      errors.push({ message: "O CPF é obrigatório." });
+    }
+    if (!rg) {
+      errors.push({ message: "O RG é obrigatório." });
+    }
+    if (!org_emitter) {
+      errors.push({ message: "O Orgão Emissor é obrigatório." });
+    }
+    if (!email) {
+      errors.push({ message: "O E-mail é obrigatório." });
+    }
+    if (!password) {
+      errors.push({ message: "A Senha é obrigatória." });
+    }
+    if (!confirmPassword) {
+      errors.push({ message: "A Confirmação de Senha é obrigatória." });
+    }
+    if (password != confirmPassword) {
+      errors.push({
+        message: "A Senha e a Confirmação de Senha não correspondem.",
+      });
+    }
+
+    if (errors.length > 0) {
+      res.status(422).json({
+        message:
+          "Por favor, preencha todos os campos obrigatório para concluir a sua solicitação.",
+        errors: errors,
+      });
+    }
+
+    try {
+      const owner = await prismaClient.owner.create({
+        data: {
+          firstname,
+          lastname,
+          cpf,
+          rg,
+          org_emitter,
+          phone,
+          email,
+          password,
+          level,
+        },
+      });
+      const payloadToken = {
+        id: owner.id,
+        firstname: owner.firstname,
+        email: owner.email,
+      };
+
+      const token = await GenerateToken(typeforToken, payloadToken, req, res);
+
+      return res.status(201).json({
+        message: "Cadastro realizado com sucesso.",
+        firstname: owner.firstname,
+        lastname: owner.lastname,
+        email: owner.email,
+        token: token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Erro no Servidor, tente novamente mais tarde.",
+      });
+    }
   }
 
   static async getOwner(req: Request, res: Response) {
@@ -20,6 +110,89 @@ export default class ColaboratorController {
   static async deleteOwner(req: Request, res: Response) {
     res.json({ message: "Obter Perfil Colab" });
     return;
+  }
+  static async createColaborator(req: Request, res: Response) {
+    const {
+      firstname,
+      lastname,
+      cpf,
+      rg,
+      org_emitter,
+      phone,
+      email,
+      password,
+      confirmPassword,
+    } = req.body;
+
+    const level: string = "colaborator";
+
+    const errors = [];
+
+    if (!firstname) {
+      errors.push({ message: "O Nome é obrigatório." });
+    }
+    if (!lastname) {
+      errors.push({ message: "O Sobrenome é obrigatório." });
+    }
+    if (!cpf) {
+      errors.push({ message: "O CPF é obrigatório." });
+    }
+    if (!rg) {
+      errors.push({ message: "O RG é obrigatório." });
+    }
+    if (!org_emitter) {
+      errors.push({ message: "O Orgão Emissor é obrigatório." });
+    }
+    if (!email) {
+      errors.push({ message: "O E-mail é obrigatório." });
+    }
+    if (!password) {
+      errors.push({ message: "A Senha é obrigatória." });
+    }
+    if (!confirmPassword) {
+      errors.push({ message: "A Confirmação de Senha é obrigatória." });
+    }
+    if (password != confirmPassword) {
+      errors.push({
+        message: "A Senha e a Confirmação de Senha não correspondem.",
+      });
+    }
+
+    if (errors?.length > 0) {
+      res.status(422).json({
+        message:
+          "Por favor, preencha todos os campos obrigatório para concluir a sua solicitação.",
+        errors: errors,
+      });
+      return;
+    }
+
+    console.log("Falha no Fluxo");
+
+    try {
+      const owner = await prismaClient.owner.create({
+        data: {
+          firstname,
+          lastname,
+          cpf,
+          rg,
+          org_emitter,
+          phone,
+          email,
+          password,
+          level,
+        },
+      });
+
+      return res.status(201).json({
+        message: "Colaborador cadastrado com sucesso.",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Erro no Servidor, tente novamente mais tarde.",
+      });
+    }
   }
 
   static async createStore(req: Request, res: Response) {
