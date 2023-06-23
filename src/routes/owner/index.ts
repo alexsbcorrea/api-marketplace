@@ -1,30 +1,33 @@
 import { Router } from "express";
 import OwnerController from "../../controllers/owner";
 
+import { OwnerTokenValidation } from "../../middlewares/TokenController";
+
 const route = Router();
 
 route.post("/create", OwnerController.createOwner);
-route.get("/profile", OwnerController.getOwner);
-route.patch("/updateprofile", OwnerController.updateOwner);
-route.patch("/changepassword", OwnerController.updateOwner);
-route.delete("/delete", OwnerController.deleteOwner);
-route.post("/createstore", OwnerController.createStore);
-route.get("/getstore", OwnerController.getStore);
-route.patch("/updatestore", OwnerController.updateStore);
-route.patch("/updatelogo", OwnerController.updateStore);
-route.patch("/updatecover", OwnerController.updateStore);
-route.delete("/deletestore", OwnerController.deleteStore);
-route.get("/createinternalcategorie", OwnerController.createInternalCategorie);
-route.get("/getinternalcategorie", OwnerController.getInternalCategorie);
-route.get("/updateinternalcategorie", OwnerController.updateInternalCategorie);
-route.get("/create", OwnerController.deleteInternalCategorie);
-route.get("/create", OwnerController.createProduct);
-route.get("/create", OwnerController.getProduct);
-route.get("/create", OwnerController.updateProduct);
-route.get("/create", OwnerController.deleteProduct);
-route.get("/create", OwnerController.createPaymentMethod);
-route.get("/create", OwnerController.getPaymentMethod);
-route.get("/create", OwnerController.updatePaymentMethod);
-route.get("/create", OwnerController.deletePaymentMethod);
+route.post("/login", OwnerController.loginOwner);
+route.get("/profile", OwnerTokenValidation, OwnerController.getOwner);
+route.patch("/updateprofile", OwnerTokenValidation, OwnerController.updateProfileOwner);
+route.patch("/changepassword", OwnerTokenValidation, OwnerController.changePasswordOwner);
+route.delete("/delete", OwnerTokenValidation, OwnerController.deleteOwner);
+route.post("/createstore", OwnerTokenValidation, OwnerController.createStore);
+route.get("/getstore", OwnerTokenValidation, OwnerController.getStore);
+route.patch("/updatestore", OwnerTokenValidation, OwnerController.updateStore);
+route.patch("/updatelogo", OwnerTokenValidation, OwnerController.updateStore);
+route.patch("/updatecover", OwnerTokenValidation, OwnerController.updateStore);
+route.delete("/deletestore", OwnerTokenValidation, OwnerController.deleteStore);
+route.get("/createinternalcategorie", OwnerTokenValidation, OwnerController.createInternalCategorie);
+route.get("/getinternalcategorie", OwnerTokenValidation, OwnerController.getInternalCategorie);
+route.get("/updateinternalcategorie", OwnerTokenValidation, OwnerController.updateInternalCategorie);
+route.get("/create", OwnerTokenValidation, OwnerController.deleteInternalCategorie);
+route.get("/create", OwnerTokenValidation, OwnerController.createProduct);
+route.get("/create", OwnerTokenValidation, OwnerController.getProduct);
+route.get("/create", OwnerTokenValidation, OwnerController.updateProduct);
+route.get("/create", OwnerTokenValidation, OwnerController.deleteProduct);
+route.get("/create", OwnerTokenValidation, OwnerController.createPaymentMethod);
+route.get("/create", OwnerTokenValidation, OwnerController.getPaymentMethod);
+route.get("/create", OwnerTokenValidation, OwnerController.updatePaymentMethod);
+route.get("/create", OwnerTokenValidation, OwnerController.deletePaymentMethod);
 
 export default route;

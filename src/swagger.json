@@ -2010,6 +2010,278 @@
           }
         }
       }
+    },
+    "/owner/create": {
+      "post": {
+        "summary": "Novo Usuário Proprietário",
+        "description": "Rota para usuário Proprietário se cadastrar no Sistema.",
+        "tags": ["owner-account"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Create-Owner"
+              },
+              "examples": {
+                "Novo Proprietário": {
+                  "value": {
+                    "firstname": "Alex",
+                    "lastname": "Silva",
+                    "cpf": "000111222-33",
+                    "rg": "12345678-9",
+                    "org_emitter": "SSP-MA",
+                    "phone": "(98) 9 8822-3355",
+                    "email": "alex.silva@gmail.com",
+                    "password": "3592",
+                    "confirmPassword": "3592"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owner/login": {
+      "post": {
+        "summary": "Login de Usuário Proprietário",
+        "description": "Rota para login de usuário nível Proprietário.",
+        "tags": ["owner-account"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Login-Owner"
+              },
+              "examples": {
+                "Login do Proprietário": {
+                  "value": {
+                    "email": "alex.santos@gmail.com",
+                    "password": "12345678"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Response-CreateAdmin-LoginAdmin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owner/profile": {
+      "get": {
+        "summary": "Obter Perfil de Usuário Proprietário",
+        "description": "Rota para obter informações do usuário nível Proprietário.",
+        "tags": ["owner-account"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Get-Profile-Owner"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owner/updateprofile": {
+      "patch": {
+        "summary": "Atualizar Perfil de Usuário Proprietário",
+        "description": "Rota para atualizar perfil de usuário nível Proprietário.",
+        "tags": ["owner-account"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Update-Profile-Owner"
+              },
+              "examples": {
+                "Atualizar Proprietário": {
+                  "value": {
+                    "firstname": "Alex",
+                    "lastname": "Silva",
+                    "cpf": "000111222-33",
+                    "rg": "12345678-9",
+                    "org_emitter": "SSP-MA",
+                    "phone": "(98) 9 8822-3355"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owner/changepassword": {
+      "patch": {
+        "summary": "Alterar Senha de Usuário Proprietário",
+        "description": "Rota para alterar a senha de usuário nível Proprietário.",
+        "tags": ["owner-account"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Update-Password-Owner"
+              },
+              "examples": {
+                "Login do Usuário": {
+                  "value": {
+                    "currentPassword": "12345678",
+                    "newPassword": "20232024",
+                    "confirmPassword": "20232024"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owner/delete": {
+      "delete": {
+        "summary": "Excluir Conta de Usuário Proprietário",
+        "description": "Rota para excluir conta do usuário nível Proprietário.",
+        "tags": ["owner-account"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": false
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Responses-SingleMessage"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3009,6 +3281,43 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "Update-Profile-Owner": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "rg": {
+            "type": "string"
+          },
+          "org_emitter": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "Update-Password-Owner": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
           }
         }
       }
